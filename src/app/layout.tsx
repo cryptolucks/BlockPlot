@@ -18,3 +18,4 @@ export default function RootLayout({
     </html>
   );
 }
+// open graph meta added via metadata export above
