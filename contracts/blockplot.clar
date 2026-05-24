@@ -69,3 +69,4 @@
 ;; docs: add @param annotation for area in register-land
 ;; docs: add @returns annotation for register-land
 ;; docs: clarify verify-ownership param descriptions
+;; docs: add @param annotation for land-id in verify-ownership
