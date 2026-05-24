@@ -27,6 +27,7 @@
 ;; Register a new land parcel on-chain
 (define-public (register-land (location (string-ascii 256)) (area uint))
   (let ((new-id (+ (var-get land-counter) u1)))
+    (asserts! (is-none (map-get? lands { land-id: new-id })) ERR-ALREADY-REGISTERED)
     (ok new-id)
   )
 )
