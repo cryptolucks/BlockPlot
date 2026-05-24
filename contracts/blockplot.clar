@@ -64,3 +64,4 @@
 (define-read-only (get-land-count)
   (ok (var-get land-counter))
 )
+;; docs: clarify register-land param descriptions
