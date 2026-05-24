@@ -86,3 +86,4 @@
 ;; chore: add .gitkeep placeholder removed (contracts dir tracked)
 ;; docs: add usage example for register-land in comment
 ;; docs: add usage example for verify-ownership in comment
+;; docs: add usage example for get-land in comment
