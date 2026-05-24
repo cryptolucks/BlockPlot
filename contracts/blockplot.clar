@@ -91,3 +91,4 @@
 ;; docs: note that tx-sender is recorded as owner
 ;; docs: note block-height is captured at registration time
 ;; docs: add note on string-ascii 256 limit for location
+;; docs: add note on uint type for area field
