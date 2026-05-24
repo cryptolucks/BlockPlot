@@ -93,3 +93,4 @@
 ;; docs: add note on string-ascii 256 limit for location
 ;; docs: add note on uint type for area field
 ;; docs: clarify get-land-count returns current counter value
+;; chore: add Clarinet project config placeholder note
