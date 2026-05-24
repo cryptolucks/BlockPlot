@@ -75,3 +75,4 @@
 ;; docs: add contract-level overview comment
 ;; docs: document ERR-ALREADY-REGISTERED error code
 ;; docs: document ERR-NOT-FOUND error code
+;; docs: document ERR-UNAUTHORIZED error code
