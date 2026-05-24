@@ -17,6 +17,7 @@
 (define-data-var land-counter uint u0)
 
 ;; --- Errors ---
+
 (define-constant ERR-ALREADY-REGISTERED (err u100))
 (define-constant ERR-NOT-FOUND (err u101))
 (define-constant ERR-UNAUTHORIZED (err u102))
@@ -25,5 +26,7 @@
 
 ;; Register a new land parcel on-chain
 (define-public (register-land (location (string-ascii 256)) (area uint))
-  (ok u0)
+  (let ((new-id (+ (var-get land-counter) u1)))
+    (ok new-id)
+  )
 )
