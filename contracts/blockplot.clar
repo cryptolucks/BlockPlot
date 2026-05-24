@@ -9,6 +9,7 @@
   {
     owner: principal,
     location: (string-ascii 256),
-    area: uint
+    area: uint,
+    registered-at: uint
   }
 )
