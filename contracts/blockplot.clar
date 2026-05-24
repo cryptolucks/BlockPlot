@@ -95,3 +95,4 @@
 ;; docs: clarify get-land-count returns current counter value
 ;; chore: add Clarinet project config placeholder note
 ;; chore: note Stacks testnet deployment target
+;; docs: add section divider for constants
