@@ -71,3 +71,4 @@
 ;; docs: clarify verify-ownership param descriptions
 ;; docs: add @param annotation for land-id in verify-ownership
 ;; docs: add @param annotation for claimant in verify-ownership
+;; docs: add @returns annotation for verify-ownership
