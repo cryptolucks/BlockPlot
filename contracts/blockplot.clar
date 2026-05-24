@@ -115,3 +115,4 @@
 ;; docs: add immutability note for registered land records
 ;; docs: clarify error u100 maps to duplicate registration
 ;; docs: clarify error u101 maps to missing land record
+;; docs: clarify error u102 reserved for unauthorized actions
