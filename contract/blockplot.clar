@@ -42,6 +42,18 @@
   )
 )
 
+;; Transfer ownership of a land parcel to a new owner
+(define-public (transfer-land (land-id uint) (new-owner principal))
+  (let ((land (unwrap! (map-get? lands { land-id: land-id }) ERR-NOT-FOUND)))
+    (asserts! (is-eq (get owner land) tx-sender) ERR-UNAUTHORIZED)
+    (map-set lands
+      { land-id: land-id }
+      (merge land { owner: new-owner })
+    )
+    (ok true)
+  )
+)
+
 ;; --- Read-Only Functions ---
 
 ;; Verify whether a principal owns a given land parcel
