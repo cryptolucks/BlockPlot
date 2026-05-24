@@ -15,3 +15,5 @@
 )
 
 (define-data-var land-counter uint u0)
+
+;; --- Errors ---
