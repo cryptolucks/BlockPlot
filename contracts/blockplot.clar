@@ -110,3 +110,4 @@
 ;; docs: note future role-based access control placeholder
 ;; docs: note IPFS document hash field as future improvement
 ;; docs: note NFT certificate minting as future improvement
+;; docs: note multi-sig approval as future improvement
