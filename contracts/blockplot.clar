@@ -13,3 +13,5 @@
     registered-at: uint
   }
 )
+
+(define-data-var land-counter uint u0)
