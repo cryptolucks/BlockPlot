@@ -67,3 +67,4 @@
 ;; docs: clarify register-land param descriptions
 ;; docs: add @param annotation for location in register-land
 ;; docs: add @param annotation for area in register-land
+;; docs: add @returns annotation for register-land
