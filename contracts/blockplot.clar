@@ -107,3 +107,4 @@
 ;; docs: add contract deployment checklist comment
 ;; docs: note future transfer-ownership function placeholder
 ;; docs: note future ownership-history function placeholder
+;; docs: note future role-based access control placeholder
