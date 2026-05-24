@@ -76,3 +76,4 @@
 ;; docs: document ERR-ALREADY-REGISTERED error code
 ;; docs: document ERR-NOT-FOUND error code
 ;; docs: document ERR-UNAUTHORIZED error code
+;; docs: document land-counter data var purpose
