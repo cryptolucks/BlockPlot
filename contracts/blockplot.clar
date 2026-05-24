@@ -106,3 +106,4 @@
 ;; docs: add inline comment on match in get-land
 ;; docs: add contract deployment checklist comment
 ;; docs: note future transfer-ownership function placeholder
+;; docs: note future ownership-history function placeholder
