@@ -37,6 +37,7 @@
         registered-at: block-height
       }
     )
+    (var-set land-counter new-id)
     (ok new-id)
   )
 )
