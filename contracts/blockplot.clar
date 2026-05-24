@@ -116,3 +116,4 @@
 ;; docs: clarify error u100 maps to duplicate registration
 ;; docs: clarify error u101 maps to missing land record
 ;; docs: clarify error u102 reserved for unauthorized actions
+;; chore: finalize contract v0.1.0 for testnet
