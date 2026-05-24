@@ -88,3 +88,4 @@
 ;; docs: add usage example for verify-ownership in comment
 ;; docs: add usage example for get-land in comment
 ;; docs: note that land-id is auto-incremented
+;; docs: note that tx-sender is recorded as owner
