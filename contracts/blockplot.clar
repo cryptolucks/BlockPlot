@@ -79,3 +79,4 @@
 ;; docs: document land-counter data var purpose
 ;; docs: document lands map schema
 ;; refactor: align map-set indentation in register-land
+;; refactor: align match expression in verify-ownership
