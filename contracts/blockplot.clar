@@ -28,6 +28,15 @@
 (define-public (register-land (location (string-ascii 256)) (area uint))
   (let ((new-id (+ (var-get land-counter) u1)))
     (asserts! (is-none (map-get? lands { land-id: new-id })) ERR-ALREADY-REGISTERED)
+    (map-set lands
+      { land-id: new-id }
+      {
+        owner: tx-sender,
+        location: location,
+        area: area,
+        registered-at: block-height
+      }
+    )
     (ok new-id)
   )
 )
