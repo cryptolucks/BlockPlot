@@ -51,3 +51,11 @@
     ERR-NOT-FOUND
   )
 )
+
+;; Fetch full details of a land parcel
+(define-read-only (get-land (land-id uint))
+  (match (map-get? lands { land-id: land-id })
+    land (ok land)
+    ERR-NOT-FOUND
+  )
+)
