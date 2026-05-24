@@ -113,3 +113,4 @@
 ;; docs: note multi-sig approval as future improvement
 ;; docs: add audit trail comment for register-land
 ;; docs: add immutability note for registered land records
+;; docs: clarify error u100 maps to duplicate registration
