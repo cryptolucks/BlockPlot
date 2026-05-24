@@ -81,3 +81,4 @@
 ;; refactor: align map-set indentation in register-land
 ;; refactor: align match expression in verify-ownership
 ;; refactor: align match expression in get-land
+;; style: normalize whitespace between sections
