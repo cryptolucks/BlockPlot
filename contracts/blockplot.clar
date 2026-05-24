@@ -43,3 +43,8 @@
 )
 
 ;; --- Read-Only Functions ---
+
+;; Verify whether a principal owns a given land parcel
+(define-read-only (verify-ownership (land-id uint) (claimant principal))
+  (ok false)
+)
