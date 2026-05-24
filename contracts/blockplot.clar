@@ -20,3 +20,5 @@
 (define-constant ERR-ALREADY-REGISTERED (err u100))
 (define-constant ERR-NOT-FOUND (err u101))
 (define-constant ERR-UNAUTHORIZED (err u102))
+
+;; --- Public Functions ---
