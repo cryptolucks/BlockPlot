@@ -74,3 +74,4 @@
 ;; docs: add @returns annotation for verify-ownership
 ;; docs: add contract-level overview comment
 ;; docs: document ERR-ALREADY-REGISTERED error code
+;; docs: document ERR-NOT-FOUND error code
