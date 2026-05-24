@@ -59,3 +59,8 @@
     ERR-NOT-FOUND
   )
 )
+
+;; Return total number of registered land parcels
+(define-read-only (get-land-count)
+  (ok (var-get land-counter))
+)
