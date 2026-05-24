@@ -8,6 +8,7 @@
   { land-id: uint }
   {
     owner: principal,
-    location: (string-ascii 256)
+    location: (string-ascii 256),
+    area: uint
   }
 )
