@@ -105,3 +105,4 @@
 ;; docs: add inline comment on is-eq ownership check
 ;; docs: add inline comment on match in get-land
 ;; docs: add contract deployment checklist comment
+;; docs: note future transfer-ownership function placeholder
