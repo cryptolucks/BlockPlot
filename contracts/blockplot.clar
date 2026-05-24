@@ -78,3 +78,4 @@
 ;; docs: document ERR-UNAUTHORIZED error code
 ;; docs: document land-counter data var purpose
 ;; docs: document lands map schema
+;; refactor: align map-set indentation in register-land
