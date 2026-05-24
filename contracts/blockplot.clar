@@ -65,3 +65,4 @@
   (ok (var-get land-counter))
 )
 ;; docs: clarify register-land param descriptions
+;; docs: add @param annotation for location in register-land
