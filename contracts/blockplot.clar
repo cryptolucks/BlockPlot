@@ -87,3 +87,4 @@
 ;; docs: add usage example for register-land in comment
 ;; docs: add usage example for verify-ownership in comment
 ;; docs: add usage example for get-land in comment
+;; docs: note that land-id is auto-incremented
