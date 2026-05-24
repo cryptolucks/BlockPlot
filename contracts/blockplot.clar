@@ -46,5 +46,8 @@
 
 ;; Verify whether a principal owns a given land parcel
 (define-read-only (verify-ownership (land-id uint) (claimant principal))
-  (ok false)
+  (match (map-get? lands { land-id: land-id })
+    land (ok (is-eq (get owner land) claimant))
+    ERR-NOT-FOUND
+  )
 )
