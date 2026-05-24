@@ -96,3 +96,4 @@
 ;; chore: add Clarinet project config placeholder note
 ;; chore: note Stacks testnet deployment target
 ;; docs: add section divider for constants
+;; docs: add section divider for data vars
