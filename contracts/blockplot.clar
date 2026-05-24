@@ -41,3 +41,5 @@
     (ok new-id)
   )
 )
+
+;; --- Read-Only Functions ---
