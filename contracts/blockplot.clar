@@ -22,3 +22,8 @@
 (define-constant ERR-UNAUTHORIZED (err u102))
 
 ;; --- Public Functions ---
+
+;; Register a new land parcel on-chain
+(define-public (register-land (location (string-ascii 256)) (area uint))
+  (ok u0)
+)
