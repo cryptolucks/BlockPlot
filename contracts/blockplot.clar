@@ -100,3 +100,4 @@
 ;; refactor: extract new-id binding comment in register-land
 ;; docs: add inline comment on asserts! guard
 ;; docs: add inline comment on map-set call
+;; docs: add inline comment on var-set call
