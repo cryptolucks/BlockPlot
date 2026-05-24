@@ -84,3 +84,4 @@
 ;; style: normalize whitespace between sections
 ;; style: add trailing newline to contract file
 ;; chore: add .gitkeep placeholder removed (contracts dir tracked)
+;; docs: add usage example for register-land in comment
