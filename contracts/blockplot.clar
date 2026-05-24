@@ -6,5 +6,8 @@
 
 (define-map lands
   { land-id: uint }
-  { owner: principal }
+  {
+    owner: principal,
+    location: (string-ascii 256)
+  }
 )
