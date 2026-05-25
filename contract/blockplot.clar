@@ -337,3 +337,4 @@
 ;; docs: document ERR-INVALID-LOCATION u104 meaning
 ;; docs: document ERR-SELF-TRANSFER u105 meaning
 ;; docs: document ERR-LAND-FROZEN u106 meaning
+;; docs: document ERR-DISPUTE-EXISTS u107 meaning
