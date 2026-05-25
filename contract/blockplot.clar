@@ -264,3 +264,4 @@
 ;; feat: add ERR-INVALID-AREA constant for zero-area guard
 ;; feat: add ERR-INVALID-LOCATION constant for empty location guard
 ;; feat: add ERR-SELF-TRANSFER constant for same-owner check
+;; feat: add ERR-LAND-FROZEN constant for freeze guard
