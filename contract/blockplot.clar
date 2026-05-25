@@ -326,3 +326,4 @@
 ;; docs: add usage example for unfreeze-land
 ;; docs: add usage example for file-dispute
 ;; docs: add usage example for resolve-dispute
+;; docs: add usage example for get-owner
