@@ -273,3 +273,4 @@
 ;; feat: guard register-land against zero area
 ;; feat: guard register-land against empty location string
 ;; feat: guard register-land against empty document hash
+;; feat: initialize frozen field to false in register-land
