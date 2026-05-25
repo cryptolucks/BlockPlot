@@ -343,3 +343,4 @@
 ;; refactor: reorder error constants by code number
 ;; refactor: group private helpers before public functions
 ;; refactor: use merge consistently in all map-set updates
+;; style: normalize blank lines between function definitions
