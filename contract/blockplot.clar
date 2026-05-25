@@ -336,3 +336,4 @@
 ;; docs: document ERR-INVALID-AREA u103 meaning
 ;; docs: document ERR-INVALID-LOCATION u104 meaning
 ;; docs: document ERR-SELF-TRANSFER u105 meaning
+;; docs: document ERR-LAND-FROZEN u106 meaning
