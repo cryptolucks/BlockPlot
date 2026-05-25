@@ -272,3 +272,4 @@
 ;; feat: add record-transfer private helper for history logging
 ;; feat: guard register-land against zero area
 ;; feat: guard register-land against empty location string
+;; feat: guard register-land against empty document hash
