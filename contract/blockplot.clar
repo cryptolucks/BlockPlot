@@ -261,3 +261,4 @@
 ;; feat: add history-counter map to track per-land transfer count
 ;; feat: add disputes map for on-chain dispute filing
 ;; feat: define CONTRACT-OWNER constant for admin gating
+;; feat: add ERR-INVALID-AREA constant for zero-area guard
