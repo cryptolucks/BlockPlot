@@ -329,3 +329,4 @@
 ;; docs: add usage example for get-owner
 ;; docs: add usage example for get-document-hash
 ;; docs: add usage example for is-frozen
+;; docs: add usage example for get-transfer-history
