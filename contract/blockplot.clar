@@ -274,3 +274,4 @@
 ;; feat: guard register-land against empty location string
 ;; feat: guard register-land against empty document hash
 ;; feat: initialize frozen field to false in register-land
+;; feat: add self-transfer guard to transfer-land
