@@ -298,3 +298,4 @@
 ;; feat: implement get-owner read-only function
 ;; feat: implement get-document-hash read-only function
 ;; feat: implement is-frozen read-only function
+;; feat: implement get-transfer-history read-only function
