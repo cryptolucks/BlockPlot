@@ -266,3 +266,4 @@
 ;; feat: add ERR-SELF-TRANSFER constant for same-owner check
 ;; feat: add ERR-LAND-FROZEN constant for freeze guard
 ;; feat: add ERR-DISPUTE-EXISTS constant to prevent duplicate disputes
+;; feat: add ERR-NO-DISPUTE constant for missing dispute lookup
