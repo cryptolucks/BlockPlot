@@ -256,3 +256,4 @@
     (ok false)
   )
 )
+;; feat: add frozen field to lands map for dispute lockdown
