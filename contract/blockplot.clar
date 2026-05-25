@@ -1,8 +1,22 @@
 ;; BlockPlot - Decentralized Land Registry
 ;; Author: BlockPlot Team
-;; Version: 0.1.0
+;; Version: 0.2.0
 
-;; --- Data Maps ---
+;; ─── Constants ────────────────────────────────────────────────────────────────
+
+(define-constant CONTRACT-OWNER tx-sender)
+(define-constant ERR-ALREADY-REGISTERED (err u100))
+(define-constant ERR-NOT-FOUND (err u101))
+(define-constant ERR-UNAUTHORIZED (err u102))
+(define-constant ERR-INVALID-AREA (err u103))
+(define-constant ERR-INVALID-LOCATION (err u104))
+(define-constant ERR-SELF-TRANSFER (err u105))
+(define-constant ERR-LAND-FROZEN (err u106))
+(define-constant ERR-DISPUTE-EXISTS (err u107))
+(define-constant ERR-NO-DISPUTE (err u108))
+(define-constant ERR-INVALID-HASH (err u109))
+
+;; ─── Data Maps ────────────────────────────────────────────────────────────────
 
 (define-map lands
   { land-id: uint }
@@ -10,23 +24,68 @@
     owner: principal,
     location: (string-ascii 256),
     area: uint,
-    registered-at: uint
+    registered-at: uint,
+    document-hash: (string-ascii 64),
+    frozen: bool
+  }
+)
+
+(define-map land-history
+  { land-id: uint, entry: uint }
+  {
+    from: principal,
+    to: principal,
+    transferred-at: uint
+  }
+)
+
+(define-map history-counter
+  { land-id: uint }
+  { count: uint }
+)
+
+(define-map disputes
+  { land-id: uint }
+  {
+    claimant: principal,
+    reason: (string-ascii 256),
+    filed-at: uint,
+    resolved: bool
   }
 )
 
 (define-data-var land-counter uint u0)
 
-;; --- Errors ---
+;; ─── Private Helpers ──────────────────────────────────────────────────────────
 
-(define-constant ERR-ALREADY-REGISTERED (err u100))
-(define-constant ERR-NOT-FOUND (err u101))
-(define-constant ERR-UNAUTHORIZED (err u102))
+(define-private (land-exists? (land-id uint))
+  (is-some (map-get? lands { land-id: land-id }))
+)
 
-;; --- Public Functions ---
+(define-private (record-transfer (land-id uint) (from principal) (to principal))
+  (let (
+    (current-count (default-to u0 (get count (map-get? history-counter { land-id: land-id }))))
+    (new-entry (+ current-count u1))
+  )
+    (map-set land-history
+      { land-id: land-id, entry: new-entry }
+      { from: from, to: to, transferred-at: block-height }
+    )
+    (map-set history-counter { land-id: land-id } { count: new-entry })
+  )
+)
 
-;; Register a new land parcel on-chain
-(define-public (register-land (location (string-ascii 256)) (area uint))
+;; ─── Public Functions ─────────────────────────────────────────────────────────
+
+;; Register a new land parcel on-chain with IPFS document hash
+(define-public (register-land
+    (location (string-ascii 256))
+    (area uint)
+    (document-hash (string-ascii 64)))
   (let ((new-id (+ (var-get land-counter) u1)))
+    (asserts! (> area u0) ERR-INVALID-AREA)
+    (asserts! (> (len location) u0) ERR-INVALID-LOCATION)
+    (asserts! (> (len document-hash) u0) ERR-INVALID-HASH)
     (asserts! (is-none (map-get? lands { land-id: new-id })) ERR-ALREADY-REGISTERED)
     (map-set lands
       { land-id: new-id }
@@ -34,7 +93,9 @@
         owner: tx-sender,
         location: location,
         area: area,
-        registered-at: block-height
+        registered-at: block-height,
+        document-hash: document-hash,
+        frozen: false
       }
     )
     (var-set land-counter new-id)
@@ -46,6 +107,10 @@
 (define-public (transfer-land (land-id uint) (new-owner principal))
   (let ((land (unwrap! (map-get? lands { land-id: land-id }) ERR-NOT-FOUND)))
     (asserts! (is-eq (get owner land) tx-sender) ERR-UNAUTHORIZED)
+    (asserts! (not (is-eq tx-sender new-owner)) ERR-SELF-TRANSFER)
+    (asserts! (not (get frozen land)) ERR-LAND-FROZEN)
+    (asserts! (is-none (map-get? disputes { land-id: land-id })) ERR-DISPUTE-EXISTS)
+    (record-transfer land-id tx-sender new-owner)
     (map-set lands
       { land-id: land-id }
       (merge land { owner: new-owner })
@@ -54,7 +119,69 @@
   )
 )
 
-;; --- Read-Only Functions ---
+;; Update the IPFS document hash for a land parcel (owner only)
+(define-public (update-document (land-id uint) (new-hash (string-ascii 64)))
+  (let ((land (unwrap! (map-get? lands { land-id: land-id }) ERR-NOT-FOUND)))
+    (asserts! (is-eq (get owner land) tx-sender) ERR-UNAUTHORIZED)
+    (asserts! (not (get frozen land)) ERR-LAND-FROZEN)
+    (asserts! (> (len new-hash) u0) ERR-INVALID-HASH)
+    (map-set lands
+      { land-id: land-id }
+      (merge land { document-hash: new-hash })
+    )
+    (ok true)
+  )
+)
+
+;; Freeze a land parcel to prevent transfers (contract owner only)
+(define-public (freeze-land (land-id uint))
+  (let ((land (unwrap! (map-get? lands { land-id: land-id }) ERR-NOT-FOUND)))
+    (asserts! (is-eq tx-sender CONTRACT-OWNER) ERR-UNAUTHORIZED)
+    (map-set lands { land-id: land-id } (merge land { frozen: true }))
+    (ok true)
+  )
+)
+
+;; Unfreeze a land parcel (contract owner only)
+(define-public (unfreeze-land (land-id uint))
+  (let ((land (unwrap! (map-get? lands { land-id: land-id }) ERR-NOT-FOUND)))
+    (asserts! (is-eq tx-sender CONTRACT-OWNER) ERR-UNAUTHORIZED)
+    (map-set lands { land-id: land-id } (merge land { frozen: false }))
+    (ok true)
+  )
+)
+
+;; File a dispute against a land parcel
+(define-public (file-dispute (land-id uint) (reason (string-ascii 256)))
+  (begin
+    (asserts! (land-exists? land-id) ERR-NOT-FOUND)
+    (asserts! (is-none (map-get? disputes { land-id: land-id })) ERR-DISPUTE-EXISTS)
+    (map-set disputes
+      { land-id: land-id }
+      {
+        claimant: tx-sender,
+        reason: reason,
+        filed-at: block-height,
+        resolved: false
+      }
+    )
+    (ok true)
+  )
+)
+
+;; Resolve a dispute (contract owner only)
+(define-public (resolve-dispute (land-id uint))
+  (let ((dispute (unwrap! (map-get? disputes { land-id: land-id }) ERR-NO-DISPUTE)))
+    (asserts! (is-eq tx-sender CONTRACT-OWNER) ERR-UNAUTHORIZED)
+    (map-set disputes
+      { land-id: land-id }
+      (merge dispute { resolved: true })
+    )
+    (ok true)
+  )
+)
+
+;; ─── Read-Only Functions ──────────────────────────────────────────────────────
 
 ;; Verify whether a principal owns a given land parcel
 (define-read-only (verify-ownership (land-id uint) (claimant principal))
@@ -76,56 +203,56 @@
 (define-read-only (get-land-count)
   (ok (var-get land-counter))
 )
-;; docs: clarify register-land param descriptions
-;; docs: add @param annotation for location in register-land
-;; docs: add @param annotation for area in register-land
-;; docs: add @returns annotation for register-land
-;; docs: clarify verify-ownership param descriptions
-;; docs: add @param annotation for land-id in verify-ownership
-;; docs: add @param annotation for claimant in verify-ownership
-;; docs: add @returns annotation for verify-ownership
-;; docs: add contract-level overview comment
-;; docs: document ERR-ALREADY-REGISTERED error code
-;; docs: document ERR-NOT-FOUND error code
-;; docs: document ERR-UNAUTHORIZED error code
-;; docs: document land-counter data var purpose
-;; docs: document lands map schema
-;; refactor: align map-set indentation in register-land
-;; refactor: align match expression in verify-ownership
-;; refactor: align match expression in get-land
-;; style: normalize whitespace between sections
-;; style: add trailing newline to contract file
-;; chore: add .gitkeep placeholder removed (contracts dir tracked)
-;; docs: add usage example for register-land in comment
-;; docs: add usage example for verify-ownership in comment
-;; docs: add usage example for get-land in comment
-;; docs: note that land-id is auto-incremented
-;; docs: note that tx-sender is recorded as owner
-;; docs: note block-height is captured at registration time
-;; docs: add note on string-ascii 256 limit for location
-;; docs: add note on uint type for area field
-;; docs: clarify get-land-count returns current counter value
-;; chore: add Clarinet project config placeholder note
-;; chore: note Stacks testnet deployment target
-;; docs: add section divider for constants
-;; docs: add section divider for data vars
-;; refactor: extract new-id binding comment in register-land
-;; docs: add inline comment on asserts! guard
-;; docs: add inline comment on map-set call
-;; docs: add inline comment on var-set call
-;; docs: add inline comment on match in verify-ownership
-;; docs: add inline comment on is-eq ownership check
-;; docs: add inline comment on match in get-land
-;; docs: add contract deployment checklist comment
-;; docs: note future transfer-ownership function placeholder
-;; docs: note future ownership-history function placeholder
-;; docs: note future role-based access control placeholder
-;; docs: note IPFS document hash field as future improvement
-;; docs: note NFT certificate minting as future improvement
-;; docs: note multi-sig approval as future improvement
-;; docs: add audit trail comment for register-land
-;; docs: add immutability note for registered land records
-;; docs: clarify error u100 maps to duplicate registration
-;; docs: clarify error u101 maps to missing land record
-;; docs: clarify error u102 reserved for unauthorized actions
-;; chore: finalize contract v0.1.0 for testnet
+
+;; Get the owner of a land parcel
+(define-read-only (get-owner (land-id uint))
+  (match (map-get? lands { land-id: land-id })
+    land (ok (get owner land))
+    ERR-NOT-FOUND
+  )
+)
+
+;; Get the document hash of a land parcel
+(define-read-only (get-document-hash (land-id uint))
+  (match (map-get? lands { land-id: land-id })
+    land (ok (get document-hash land))
+    ERR-NOT-FOUND
+  )
+)
+
+;; Check if a land parcel is frozen
+(define-read-only (is-frozen (land-id uint))
+  (match (map-get? lands { land-id: land-id })
+    land (ok (get frozen land))
+    ERR-NOT-FOUND
+  )
+)
+
+;; Get a specific transfer history entry
+(define-read-only (get-transfer-history (land-id uint) (entry uint))
+  (match (map-get? land-history { land-id: land-id, entry: entry })
+    record (ok record)
+    ERR-NOT-FOUND
+  )
+)
+
+;; Get total number of transfers for a land parcel
+(define-read-only (get-transfer-count (land-id uint))
+  (ok (default-to u0 (get count (map-get? history-counter { land-id: land-id }))))
+)
+
+;; Get dispute details for a land parcel
+(define-read-only (get-dispute (land-id uint))
+  (match (map-get? disputes { land-id: land-id })
+    dispute (ok dispute)
+    ERR-NO-DISPUTE
+  )
+)
+
+;; Check if a land parcel has an active (unresolved) dispute
+(define-read-only (has-active-dispute (land-id uint))
+  (match (map-get? disputes { land-id: land-id })
+    dispute (ok (not (get resolved dispute)))
+    (ok false)
+  )
+)
