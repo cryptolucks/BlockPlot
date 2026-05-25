@@ -338,3 +338,4 @@
 ;; docs: document ERR-SELF-TRANSFER u105 meaning
 ;; docs: document ERR-LAND-FROZEN u106 meaning
 ;; docs: document ERR-DISPUTE-EXISTS u107 meaning
+;; docs: document ERR-NO-DISPUTE u108 meaning
