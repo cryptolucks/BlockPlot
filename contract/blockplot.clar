@@ -291,3 +291,4 @@
 ;; feat: guard file-dispute against duplicate disputes
 ;; feat: store claimant principal in disputes map
 ;; feat: store filed-at block-height in disputes map
+;; feat: initialize resolved to false in file-dispute
