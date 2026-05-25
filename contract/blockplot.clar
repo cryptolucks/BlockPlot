@@ -292,3 +292,4 @@
 ;; feat: store claimant principal in disputes map
 ;; feat: store filed-at block-height in disputes map
 ;; feat: initialize resolved to false in file-dispute
+;; feat: implement resolve-dispute admin function
