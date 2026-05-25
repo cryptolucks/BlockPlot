@@ -281,3 +281,4 @@
 ;; feat: implement update-document public function
 ;; feat: guard update-document to owner only
 ;; feat: guard update-document against frozen land
+;; feat: guard update-document against empty hash
