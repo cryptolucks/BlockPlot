@@ -323,3 +323,4 @@
 ;; docs: note that resolve-dispute does not unfreeze land
 ;; docs: add usage example for update-document
 ;; docs: add usage example for freeze-land
+;; docs: add usage example for unfreeze-land
