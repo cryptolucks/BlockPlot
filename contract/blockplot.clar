@@ -280,3 +280,4 @@
 ;; feat: call record-transfer inside transfer-land for audit log
 ;; feat: implement update-document public function
 ;; feat: guard update-document to owner only
+;; feat: guard update-document against frozen land
