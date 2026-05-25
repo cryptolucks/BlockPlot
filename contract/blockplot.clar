@@ -276,3 +276,4 @@
 ;; feat: initialize frozen field to false in register-land
 ;; feat: add self-transfer guard to transfer-land
 ;; feat: add freeze guard to transfer-land
+;; feat: add dispute guard to transfer-land
