@@ -269,3 +269,4 @@
 ;; feat: add ERR-NO-DISPUTE constant for missing dispute lookup
 ;; feat: add ERR-INVALID-HASH constant for empty hash guard
 ;; feat: add land-exists? private helper function
+;; feat: add record-transfer private helper for history logging
