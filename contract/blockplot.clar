@@ -321,3 +321,4 @@
 ;; docs: note that transfer-land emits audit log entry
 ;; docs: note that freeze-land blocks all future transfers
 ;; docs: note that resolve-dispute does not unfreeze land
+;; docs: add usage example for update-document
