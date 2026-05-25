@@ -260,3 +260,4 @@
 ;; feat: add land-history map for transfer audit trail
 ;; feat: add history-counter map to track per-land transfer count
 ;; feat: add disputes map for on-chain dispute filing
+;; feat: define CONTRACT-OWNER constant for admin gating
