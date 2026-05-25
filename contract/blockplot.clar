@@ -69,7 +69,7 @@
   )
     (map-set land-history
       { land-id: land-id, entry: new-entry }
-      { from: from, to: to, transferred-at: block-height }
+      { from: from, to: to, transferred-at: burn-block-height }
     )
     (map-set history-counter { land-id: land-id } { count: new-entry })
   )
@@ -93,7 +93,7 @@
         owner: tx-sender,
         location: location,
         area: area,
-        registered-at: block-height,
+        registered-at: burn-block-height,
         document-hash: document-hash,
         frozen: false
       }
@@ -175,7 +175,7 @@
       {
         claimant: tx-sender,
         reason: reason,
-        filed-at: block-height,
+        filed-at: burn-block-height,
         resolved: false
       }
     )
