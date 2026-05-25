@@ -314,3 +314,4 @@
 ;; docs: add @param annotation for land-id in resolve-dispute
 ;; docs: add @param for entry index in get-transfer-history
 ;; docs: document land-history map key schema
+;; docs: document land-history map value schema
