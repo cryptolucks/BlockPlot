@@ -340,3 +340,4 @@
 ;; docs: document ERR-DISPUTE-EXISTS u107 meaning
 ;; docs: document ERR-NO-DISPUTE u108 meaning
 ;; docs: document ERR-INVALID-HASH u109 meaning
+;; refactor: reorder error constants by code number
