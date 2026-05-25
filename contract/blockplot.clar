@@ -2,7 +2,7 @@
 ;; Author: BlockPlot Team
 ;; Version: 0.2.0
 
-;; ─── Constants ────────────────────────────────────────────────────────────────
+;; Constants
 
 (define-constant CONTRACT-OWNER tx-sender)
 (define-constant ERR-ALREADY-REGISTERED (err u100))
@@ -16,7 +16,7 @@
 (define-constant ERR-NO-DISPUTE (err u108))
 (define-constant ERR-INVALID-HASH (err u109))
 
-;; ─── Data Maps ────────────────────────────────────────────────────────────────
+;; Data Maps
 
 (define-map lands
   { land-id: uint }
@@ -56,7 +56,7 @@
 
 (define-data-var land-counter uint u0)
 
-;; ─── Private Helpers ──────────────────────────────────────────────────────────
+;; Private Helpers
 
 (define-private (land-exists? (land-id uint))
   (is-some (map-get? lands { land-id: land-id }))
@@ -75,7 +75,7 @@
   )
 )
 
-;; ─── Public Functions ─────────────────────────────────────────────────────────
+;; Public Functions
 
 ;; Register a new land parcel on-chain with IPFS document hash
 (define-public (register-land
@@ -105,55 +105,69 @@
 
 ;; Transfer ownership of a land parcel to a new owner
 (define-public (transfer-land (land-id uint) (new-owner principal))
-  (let ((land (unwrap! (map-get? lands { land-id: land-id }) ERR-NOT-FOUND)))
-    (asserts! (is-eq (get owner land) tx-sender) ERR-UNAUTHORIZED)
-    (asserts! (not (is-eq tx-sender new-owner)) ERR-SELF-TRANSFER)
-    (asserts! (not (get frozen land)) ERR-LAND-FROZEN)
-    (asserts! (is-none (map-get? disputes { land-id: land-id })) ERR-DISPUTE-EXISTS)
-    (record-transfer land-id tx-sender new-owner)
-    (map-set lands
-      { land-id: land-id }
-      (merge land { owner: new-owner })
+  (begin
+    (asserts! (> land-id u0) ERR-NOT-FOUND)
+    (let ((land (unwrap! (map-get? lands { land-id: land-id }) ERR-NOT-FOUND)))
+      (asserts! (is-eq (get owner land) tx-sender) ERR-UNAUTHORIZED)
+      (asserts! (not (is-eq tx-sender new-owner)) ERR-SELF-TRANSFER)
+      (asserts! (not (get frozen land)) ERR-LAND-FROZEN)
+      (asserts! (is-none (map-get? disputes { land-id: land-id })) ERR-DISPUTE-EXISTS)
+      (record-transfer land-id tx-sender new-owner)
+      (map-set lands
+        { land-id: land-id }
+        (merge land { owner: new-owner })
+      )
+      (ok true)
     )
-    (ok true)
   )
 )
 
 ;; Update the IPFS document hash for a land parcel (owner only)
 (define-public (update-document (land-id uint) (new-hash (string-ascii 64)))
-  (let ((land (unwrap! (map-get? lands { land-id: land-id }) ERR-NOT-FOUND)))
-    (asserts! (is-eq (get owner land) tx-sender) ERR-UNAUTHORIZED)
-    (asserts! (not (get frozen land)) ERR-LAND-FROZEN)
+  (begin
+    (asserts! (> land-id u0) ERR-NOT-FOUND)
     (asserts! (> (len new-hash) u0) ERR-INVALID-HASH)
-    (map-set lands
-      { land-id: land-id }
-      (merge land { document-hash: new-hash })
+    (let ((land (unwrap! (map-get? lands { land-id: land-id }) ERR-NOT-FOUND)))
+      (asserts! (is-eq (get owner land) tx-sender) ERR-UNAUTHORIZED)
+      (asserts! (not (get frozen land)) ERR-LAND-FROZEN)
+      (map-set lands
+        { land-id: land-id }
+        (merge land { document-hash: new-hash })
+      )
+      (ok true)
     )
-    (ok true)
   )
 )
 
 ;; Freeze a land parcel to prevent transfers (contract owner only)
 (define-public (freeze-land (land-id uint))
-  (let ((land (unwrap! (map-get? lands { land-id: land-id }) ERR-NOT-FOUND)))
+  (begin
+    (asserts! (> land-id u0) ERR-NOT-FOUND)
     (asserts! (is-eq tx-sender CONTRACT-OWNER) ERR-UNAUTHORIZED)
-    (map-set lands { land-id: land-id } (merge land { frozen: true }))
-    (ok true)
+    (let ((land (unwrap! (map-get? lands { land-id: land-id }) ERR-NOT-FOUND)))
+      (map-set lands { land-id: land-id } (merge land { frozen: true }))
+      (ok true)
+    )
   )
 )
 
 ;; Unfreeze a land parcel (contract owner only)
 (define-public (unfreeze-land (land-id uint))
-  (let ((land (unwrap! (map-get? lands { land-id: land-id }) ERR-NOT-FOUND)))
+  (begin
+    (asserts! (> land-id u0) ERR-NOT-FOUND)
     (asserts! (is-eq tx-sender CONTRACT-OWNER) ERR-UNAUTHORIZED)
-    (map-set lands { land-id: land-id } (merge land { frozen: false }))
-    (ok true)
+    (let ((land (unwrap! (map-get? lands { land-id: land-id }) ERR-NOT-FOUND)))
+      (map-set lands { land-id: land-id } (merge land { frozen: false }))
+      (ok true)
+    )
   )
 )
 
 ;; File a dispute against a land parcel
 (define-public (file-dispute (land-id uint) (reason (string-ascii 256)))
   (begin
+    (asserts! (> land-id u0) ERR-NOT-FOUND)
+    (asserts! (> (len reason) u0) ERR-INVALID-LOCATION)
     (asserts! (land-exists? land-id) ERR-NOT-FOUND)
     (asserts! (is-none (map-get? disputes { land-id: land-id })) ERR-DISPUTE-EXISTS)
     (map-set disputes
@@ -171,17 +185,19 @@
 
 ;; Resolve a dispute (contract owner only)
 (define-public (resolve-dispute (land-id uint))
-  (let ((dispute (unwrap! (map-get? disputes { land-id: land-id }) ERR-NO-DISPUTE)))
+  (begin
+    (asserts! (> land-id u0) ERR-NO-DISPUTE)
     (asserts! (is-eq tx-sender CONTRACT-OWNER) ERR-UNAUTHORIZED)
-    (map-set disputes
-      { land-id: land-id }
-      (merge dispute { resolved: true })
-    )
-    (ok true)
+    (let ((dispute (unwrap! (map-get? disputes { land-id: land-id }) ERR-NO-DISPUTE)))
+      (map-set disputes
+        { land-id: land-id }
+        (merge dispute { resolved: true })
+      )
+      (ok true)
   )
 )
 
-;; ─── Read-Only Functions ──────────────────────────────────────────────────────
+;; Read-Only Functions
 
 ;; Verify whether a principal owns a given land parcel
 (define-read-only (verify-ownership (land-id uint) (claimant principal))
