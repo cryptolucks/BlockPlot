@@ -318,3 +318,4 @@
 ;; docs: document history-counter map schema
 ;; docs: document disputes map key schema
 ;; docs: document disputes map value schema
+;; docs: note that transfer-land emits audit log entry
