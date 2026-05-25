@@ -304,3 +304,4 @@
 ;; feat: implement has-active-dispute read-only function
 ;; docs: document document-hash as IPFS CID string (max 64 chars)
 ;; docs: document frozen field prevents all transfers when true
+;; docs: add @param annotation for document-hash in register-land
