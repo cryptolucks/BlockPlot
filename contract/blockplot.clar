@@ -353,3 +353,4 @@
 ;; chore: note NFT certificate minting as v0.3.0 target
 ;; chore: note GIS coordinate field as v0.3.0 target
 ;; chore: note government oracle integration as v0.4.0 target
+;; chore: finalize contract v0.2.0 for testnet deployment
