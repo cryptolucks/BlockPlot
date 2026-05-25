@@ -320,3 +320,4 @@
 ;; docs: document disputes map value schema
 ;; docs: note that transfer-land emits audit log entry
 ;; docs: note that freeze-land blocks all future transfers
+;; docs: note that resolve-dispute does not unfreeze land
