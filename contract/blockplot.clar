@@ -277,3 +277,4 @@
 ;; feat: add self-transfer guard to transfer-land
 ;; feat: add freeze guard to transfer-land
 ;; feat: add dispute guard to transfer-land
+;; feat: call record-transfer inside transfer-land for audit log
