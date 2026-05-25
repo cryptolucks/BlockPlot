@@ -315,3 +315,4 @@
 ;; docs: add @param for entry index in get-transfer-history
 ;; docs: document land-history map key schema
 ;; docs: document land-history map value schema
+;; docs: document history-counter map schema
