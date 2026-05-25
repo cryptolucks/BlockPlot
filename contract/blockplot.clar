@@ -257,3 +257,4 @@
   )
 )
 ;; feat: add frozen field to lands map for dispute lockdown
+;; feat: add land-history map for transfer audit trail
