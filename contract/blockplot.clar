@@ -286,3 +286,4 @@
 ;; feat: gate freeze-land to CONTRACT-OWNER
 ;; feat: implement unfreeze-land admin function
 ;; feat: gate unfreeze-land to CONTRACT-OWNER
+;; feat: implement file-dispute public function
