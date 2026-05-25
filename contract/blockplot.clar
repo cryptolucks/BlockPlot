@@ -302,3 +302,4 @@
 ;; feat: implement get-transfer-count read-only function
 ;; feat: implement get-dispute read-only function
 ;; feat: implement has-active-dispute read-only function
+;; docs: document document-hash as IPFS CID string (max 64 chars)
