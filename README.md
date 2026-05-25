@@ -59,15 +59,23 @@ BlockPlot addresses these issues through decentralized and verifiable record man
 
 ---
 
-## Smart Contract — `contracts/blockplot.clar`
+## Mainnet Deployment
+
+The `blockplot-v3` contract is fully deployed and active on the Stacks Mainnet!
+
+* **Contract ID:** [`SP2N00STXH4K1GBPHC5AM62BP4AJ7STS4XJXCD2D4.blockplot-v3`](https://explorer.hiro.so/txid/38fb14d77cac06ad825c32c6705792879828aed5dc7fc176a837be5146322f19?chain=mainnet)
+
+---
+
+## Smart Contract — `contract/blockplot.clar` (v0.2.0)
 
 ### `register-land`
 
 ```clarity
-(define-public (register-land (location (string-ascii 256)) (area uint))
+(define-public (register-land (location (string-ascii 256)) (area uint) (document-hash (string-ascii 64)))
 ```
 
-Registers a new land parcel on-chain. Stores the caller (`tx-sender`) as owner, along with location, area, and the current block height. Returns the new `land-id`.
+Registers a new land parcel on-chain with its IPFS document hash. Stores the caller (`tx-sender`) as owner, along with location, area, document hash, and the current burn block height. Returns the new `land-id`.
 
 ### `verify-ownership`
 
@@ -81,8 +89,18 @@ Returns `(ok true)` if `claimant` is the registered owner of the given land parc
 
 | Function | Type | Description |
 |---|---|---|
+| `transfer-land` | public | Transfer ownership of a land parcel to a new owner |
+| `update-document` | public | Update the IPFS document hash for a land parcel (owner only) |
+| `file-dispute` | public | File a dispute against a land parcel |
+| `freeze-land` | public | Admin function to freeze a land parcel from being transferred |
+| `unfreeze-land` | public | Admin function to unfreeze a land parcel |
+| `resolve-dispute` | public | Admin function to mark a dispute as resolved |
 | `get-land` | read-only | Fetch full details of a land parcel |
 | `get-land-count` | read-only | Return total registered parcels |
+| `get-owner` | read-only | Return the owner of a land parcel |
+| `get-transfer-history` | read-only | Return a specific transfer history entry |
+| `get-transfer-count` | read-only | Return total number of transfers for a land parcel |
+| `get-dispute` | read-only | Get dispute details for a land parcel |
 
 ### Error Codes
 
@@ -144,8 +162,6 @@ npm run dev
 
 ## Future Improvements
 
-* Transfer ownership function
-* Ownership history tracking
 * GIS/Map integration
 * NFT-based land certificates (SIP-009)
 * Multi-signature ownership approvals

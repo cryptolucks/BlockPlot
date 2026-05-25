@@ -2,7 +2,7 @@
 ;; Author: BlockPlot Team
 ;; Version: 0.2.0
 
-;; ─── Constants ────────────────────────────────────────────────────────────────
+;; Constants
 
 (define-constant CONTRACT-OWNER tx-sender)
 (define-constant ERR-ALREADY-REGISTERED (err u100))
@@ -16,7 +16,7 @@
 (define-constant ERR-NO-DISPUTE (err u108))
 (define-constant ERR-INVALID-HASH (err u109))
 
-;; ─── Data Maps ────────────────────────────────────────────────────────────────
+;; Data Maps
 
 (define-map lands
   { land-id: uint }
@@ -56,7 +56,7 @@
 
 (define-data-var land-counter uint u0)
 
-;; ─── Private Helpers ──────────────────────────────────────────────────────────
+;; Private Helpers
 
 (define-private (land-exists? (land-id uint))
   (is-some (map-get? lands { land-id: land-id }))
@@ -69,13 +69,13 @@
   )
     (map-set land-history
       { land-id: land-id, entry: new-entry }
-      { from: from, to: to, transferred-at: block-height }
+      { from: from, to: to, transferred-at: burn-block-height }
     )
     (map-set history-counter { land-id: land-id } { count: new-entry })
   )
 )
 
-;; ─── Public Functions ─────────────────────────────────────────────────────────
+;; Public Functions
 
 ;; Register a new land parcel on-chain with IPFS document hash
 (define-public (register-land
@@ -93,7 +93,7 @@
         owner: tx-sender,
         location: location,
         area: area,
-        registered-at: block-height,
+        registered-at: burn-block-height,
         document-hash: document-hash,
         frozen: false
       }
@@ -105,55 +105,69 @@
 
 ;; Transfer ownership of a land parcel to a new owner
 (define-public (transfer-land (land-id uint) (new-owner principal))
-  (let ((land (unwrap! (map-get? lands { land-id: land-id }) ERR-NOT-FOUND)))
-    (asserts! (is-eq (get owner land) tx-sender) ERR-UNAUTHORIZED)
-    (asserts! (not (is-eq tx-sender new-owner)) ERR-SELF-TRANSFER)
-    (asserts! (not (get frozen land)) ERR-LAND-FROZEN)
-    (asserts! (is-none (map-get? disputes { land-id: land-id })) ERR-DISPUTE-EXISTS)
-    (record-transfer land-id tx-sender new-owner)
-    (map-set lands
-      { land-id: land-id }
-      (merge land { owner: new-owner })
+  (begin
+    (asserts! (> land-id u0) ERR-NOT-FOUND)
+    (let ((land (unwrap! (map-get? lands { land-id: land-id }) ERR-NOT-FOUND)))
+      (asserts! (is-eq (get owner land) tx-sender) ERR-UNAUTHORIZED)
+      (asserts! (not (is-eq tx-sender new-owner)) ERR-SELF-TRANSFER)
+      (asserts! (not (get frozen land)) ERR-LAND-FROZEN)
+      (asserts! (is-none (map-get? disputes { land-id: land-id })) ERR-DISPUTE-EXISTS)
+      (record-transfer land-id tx-sender new-owner)
+      (map-set lands
+        { land-id: land-id }
+        (merge land { owner: new-owner })
+      )
+      (ok true)
     )
-    (ok true)
   )
 )
 
 ;; Update the IPFS document hash for a land parcel (owner only)
 (define-public (update-document (land-id uint) (new-hash (string-ascii 64)))
-  (let ((land (unwrap! (map-get? lands { land-id: land-id }) ERR-NOT-FOUND)))
-    (asserts! (is-eq (get owner land) tx-sender) ERR-UNAUTHORIZED)
-    (asserts! (not (get frozen land)) ERR-LAND-FROZEN)
+  (begin
+    (asserts! (> land-id u0) ERR-NOT-FOUND)
     (asserts! (> (len new-hash) u0) ERR-INVALID-HASH)
-    (map-set lands
-      { land-id: land-id }
-      (merge land { document-hash: new-hash })
+    (let ((land (unwrap! (map-get? lands { land-id: land-id }) ERR-NOT-FOUND)))
+      (asserts! (is-eq (get owner land) tx-sender) ERR-UNAUTHORIZED)
+      (asserts! (not (get frozen land)) ERR-LAND-FROZEN)
+      (map-set lands
+        { land-id: land-id }
+        (merge land { document-hash: new-hash })
+      )
+      (ok true)
     )
-    (ok true)
   )
 )
 
 ;; Freeze a land parcel to prevent transfers (contract owner only)
 (define-public (freeze-land (land-id uint))
-  (let ((land (unwrap! (map-get? lands { land-id: land-id }) ERR-NOT-FOUND)))
+  (begin
+    (asserts! (> land-id u0) ERR-NOT-FOUND)
     (asserts! (is-eq tx-sender CONTRACT-OWNER) ERR-UNAUTHORIZED)
-    (map-set lands { land-id: land-id } (merge land { frozen: true }))
-    (ok true)
+    (let ((land (unwrap! (map-get? lands { land-id: land-id }) ERR-NOT-FOUND)))
+      (map-set lands { land-id: land-id } (merge land { frozen: true }))
+      (ok true)
+    )
   )
 )
 
 ;; Unfreeze a land parcel (contract owner only)
 (define-public (unfreeze-land (land-id uint))
-  (let ((land (unwrap! (map-get? lands { land-id: land-id }) ERR-NOT-FOUND)))
+  (begin
+    (asserts! (> land-id u0) ERR-NOT-FOUND)
     (asserts! (is-eq tx-sender CONTRACT-OWNER) ERR-UNAUTHORIZED)
-    (map-set lands { land-id: land-id } (merge land { frozen: false }))
-    (ok true)
+    (let ((land (unwrap! (map-get? lands { land-id: land-id }) ERR-NOT-FOUND)))
+      (map-set lands { land-id: land-id } (merge land { frozen: false }))
+      (ok true)
+    )
   )
 )
 
 ;; File a dispute against a land parcel
 (define-public (file-dispute (land-id uint) (reason (string-ascii 256)))
   (begin
+    (asserts! (> land-id u0) ERR-NOT-FOUND)
+    (asserts! (> (len reason) u0) ERR-INVALID-LOCATION)
     (asserts! (land-exists? land-id) ERR-NOT-FOUND)
     (asserts! (is-none (map-get? disputes { land-id: land-id })) ERR-DISPUTE-EXISTS)
     (map-set disputes
@@ -161,7 +175,7 @@
       {
         claimant: tx-sender,
         reason: reason,
-        filed-at: block-height,
+        filed-at: burn-block-height,
         resolved: false
       }
     )
@@ -171,17 +185,20 @@
 
 ;; Resolve a dispute (contract owner only)
 (define-public (resolve-dispute (land-id uint))
-  (let ((dispute (unwrap! (map-get? disputes { land-id: land-id }) ERR-NO-DISPUTE)))
+  (begin
+    (asserts! (> land-id u0) ERR-NO-DISPUTE)
     (asserts! (is-eq tx-sender CONTRACT-OWNER) ERR-UNAUTHORIZED)
-    (map-set disputes
-      { land-id: land-id }
-      (merge dispute { resolved: true })
+    (let ((dispute (unwrap! (map-get? disputes { land-id: land-id }) ERR-NO-DISPUTE)))
+      (map-set disputes
+        { land-id: land-id }
+        (merge dispute { resolved: true })
+      )
+      (ok true)
     )
-    (ok true)
   )
 )
 
-;; ─── Read-Only Functions ──────────────────────────────────────────────────────
+;; Read-Only Functions
 
 ;; Verify whether a principal owns a given land parcel
 (define-read-only (verify-ownership (land-id uint) (claimant principal))
@@ -256,101 +273,3 @@
     (ok false)
   )
 )
-;; feat: add frozen field to lands map for dispute lockdown
-;; feat: add land-history map for transfer audit trail
-;; feat: add history-counter map to track per-land transfer count
-;; feat: add disputes map for on-chain dispute filing
-;; feat: define CONTRACT-OWNER constant for admin gating
-;; feat: add ERR-INVALID-AREA constant for zero-area guard
-;; feat: add ERR-INVALID-LOCATION constant for empty location guard
-;; feat: add ERR-SELF-TRANSFER constant for same-owner check
-;; feat: add ERR-LAND-FROZEN constant for freeze guard
-;; feat: add ERR-DISPUTE-EXISTS constant to prevent duplicate disputes
-;; feat: add ERR-NO-DISPUTE constant for missing dispute lookup
-;; feat: add ERR-INVALID-HASH constant for empty hash guard
-;; feat: add land-exists? private helper function
-;; feat: add record-transfer private helper for history logging
-;; feat: guard register-land against zero area
-;; feat: guard register-land against empty location string
-;; feat: guard register-land against empty document hash
-;; feat: initialize frozen field to false in register-land
-;; feat: add self-transfer guard to transfer-land
-;; feat: add freeze guard to transfer-land
-;; feat: add dispute guard to transfer-land
-;; feat: call record-transfer inside transfer-land for audit log
-;; feat: implement update-document public function
-;; feat: guard update-document to owner only
-;; feat: guard update-document against frozen land
-;; feat: guard update-document against empty hash
-;; feat: implement freeze-land admin function
-;; feat: gate freeze-land to CONTRACT-OWNER
-;; feat: implement unfreeze-land admin function
-;; feat: gate unfreeze-land to CONTRACT-OWNER
-;; feat: implement file-dispute public function
-;; feat: guard file-dispute against non-existent land
-;; feat: guard file-dispute against duplicate disputes
-;; feat: store claimant principal in disputes map
-;; feat: store filed-at block-height in disputes map
-;; feat: initialize resolved to false in file-dispute
-;; feat: implement resolve-dispute admin function
-;; feat: gate resolve-dispute to CONTRACT-OWNER
-;; feat: mark dispute resolved via merge in resolve-dispute
-;; feat: implement get-owner read-only function
-;; feat: implement get-document-hash read-only function
-;; feat: implement is-frozen read-only function
-;; feat: implement get-transfer-history read-only function
-;; feat: implement get-transfer-count read-only function
-;; feat: implement get-dispute read-only function
-;; feat: implement has-active-dispute read-only function
-;; docs: document document-hash as IPFS CID string (max 64 chars)
-;; docs: document frozen field prevents all transfers when true
-;; docs: add @param annotation for document-hash in register-land
-;; docs: add @returns annotation for register-land (land-id)
-;; docs: add @param annotation for new-owner in transfer-land
-;; docs: add @returns annotation for transfer-land
-;; docs: add @param annotation for new-hash in update-document
-;; docs: add @param annotation for land-id in freeze-land
-;; docs: add @param annotation for reason in file-dispute
-;; docs: add @param annotation for land-id in resolve-dispute
-;; docs: add @param for entry index in get-transfer-history
-;; docs: document land-history map key schema
-;; docs: document land-history map value schema
-;; docs: document history-counter map schema
-;; docs: document disputes map key schema
-;; docs: document disputes map value schema
-;; docs: note that transfer-land emits audit log entry
-;; docs: note that freeze-land blocks all future transfers
-;; docs: note that resolve-dispute does not unfreeze land
-;; docs: add usage example for update-document
-;; docs: add usage example for freeze-land
-;; docs: add usage example for unfreeze-land
-;; docs: add usage example for file-dispute
-;; docs: add usage example for resolve-dispute
-;; docs: add usage example for get-owner
-;; docs: add usage example for get-document-hash
-;; docs: add usage example for is-frozen
-;; docs: add usage example for get-transfer-history
-;; docs: add usage example for get-transfer-count
-;; docs: add usage example for get-dispute
-;; docs: add usage example for has-active-dispute
-;; docs: document ERR-INVALID-AREA u103 meaning
-;; docs: document ERR-INVALID-LOCATION u104 meaning
-;; docs: document ERR-SELF-TRANSFER u105 meaning
-;; docs: document ERR-LAND-FROZEN u106 meaning
-;; docs: document ERR-DISPUTE-EXISTS u107 meaning
-;; docs: document ERR-NO-DISPUTE u108 meaning
-;; docs: document ERR-INVALID-HASH u109 meaning
-;; refactor: reorder error constants by code number
-;; refactor: group private helpers before public functions
-;; refactor: use merge consistently in all map-set updates
-;; style: normalize blank lines between function definitions
-;; style: align indentation in land-history map definition
-;; style: align indentation in disputes map definition
-;; chore: bump version comment to 0.2.0
-;; chore: update README contract API section for new functions
-;; chore: add testnet deployment checklist for v0.2.0
-;; chore: note multi-sig ownership as v0.3.0 target
-;; chore: note NFT certificate minting as v0.3.0 target
-;; chore: note GIS coordinate field as v0.3.0 target
-;; chore: note government oracle integration as v0.4.0 target
-;; chore: finalize contract v0.2.0 for testnet deployment
