@@ -352,3 +352,4 @@
 ;; chore: note multi-sig ownership as v0.3.0 target
 ;; chore: note NFT certificate minting as v0.3.0 target
 ;; chore: note GIS coordinate field as v0.3.0 target
+;; chore: note government oracle integration as v0.4.0 target
