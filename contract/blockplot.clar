@@ -283,3 +283,4 @@
 ;; feat: guard update-document against frozen land
 ;; feat: guard update-document against empty hash
 ;; feat: implement freeze-land admin function
+;; feat: gate freeze-land to CONTRACT-OWNER
