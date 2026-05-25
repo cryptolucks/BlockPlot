@@ -294,3 +294,4 @@
 ;; feat: initialize resolved to false in file-dispute
 ;; feat: implement resolve-dispute admin function
 ;; feat: gate resolve-dispute to CONTRACT-OWNER
+;; feat: mark dispute resolved via merge in resolve-dispute
