@@ -300,3 +300,4 @@
 ;; feat: implement is-frozen read-only function
 ;; feat: implement get-transfer-history read-only function
 ;; feat: implement get-transfer-count read-only function
+;; feat: implement get-dispute read-only function
