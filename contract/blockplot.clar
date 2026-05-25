@@ -309,3 +309,4 @@
 ;; docs: add @param annotation for new-owner in transfer-land
 ;; docs: add @returns annotation for transfer-land
 ;; docs: add @param annotation for new-hash in update-document
+;; docs: add @param annotation for land-id in freeze-land
