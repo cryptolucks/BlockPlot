@@ -293,3 +293,4 @@
 ;; feat: store filed-at block-height in disputes map
 ;; feat: initialize resolved to false in file-dispute
 ;; feat: implement resolve-dispute admin function
+;; feat: gate resolve-dispute to CONTRACT-OWNER
