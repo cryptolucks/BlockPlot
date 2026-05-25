@@ -346,3 +346,4 @@
 ;; style: normalize blank lines between function definitions
 ;; style: align indentation in land-history map definition
 ;; style: align indentation in disputes map definition
+;; chore: bump version comment to 0.2.0
