@@ -333,3 +333,4 @@
 ;; docs: add usage example for get-transfer-count
 ;; docs: add usage example for get-dispute
 ;; docs: add usage example for has-active-dispute
+;; docs: document ERR-INVALID-AREA u103 meaning
