@@ -307,3 +307,4 @@
 ;; docs: add @param annotation for document-hash in register-land
 ;; docs: add @returns annotation for register-land (land-id)
 ;; docs: add @param annotation for new-owner in transfer-land
+;; docs: add @returns annotation for transfer-land
