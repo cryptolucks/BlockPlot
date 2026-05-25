@@ -332,3 +332,4 @@
 ;; docs: add usage example for get-transfer-history
 ;; docs: add usage example for get-transfer-count
 ;; docs: add usage example for get-dispute
+;; docs: add usage example for has-active-dispute
