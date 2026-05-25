@@ -288,3 +288,4 @@
 ;; feat: gate unfreeze-land to CONTRACT-OWNER
 ;; feat: implement file-dispute public function
 ;; feat: guard file-dispute against non-existent land
+;; feat: guard file-dispute against duplicate disputes
