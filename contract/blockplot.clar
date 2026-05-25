@@ -325,3 +325,4 @@
 ;; docs: add usage example for freeze-land
 ;; docs: add usage example for unfreeze-land
 ;; docs: add usage example for file-dispute
+;; docs: add usage example for resolve-dispute
