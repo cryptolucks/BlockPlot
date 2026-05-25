@@ -289,3 +289,4 @@
 ;; feat: implement file-dispute public function
 ;; feat: guard file-dispute against non-existent land
 ;; feat: guard file-dispute against duplicate disputes
+;; feat: store claimant principal in disputes map
