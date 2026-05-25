@@ -282,3 +282,4 @@
 ;; feat: guard update-document to owner only
 ;; feat: guard update-document against frozen land
 ;; feat: guard update-document against empty hash
+;; feat: implement freeze-land admin function
