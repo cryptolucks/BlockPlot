@@ -347,3 +347,4 @@
 ;; style: align indentation in land-history map definition
 ;; style: align indentation in disputes map definition
 ;; chore: bump version comment to 0.2.0
+;; chore: update README contract API section for new functions
