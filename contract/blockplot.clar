@@ -331,3 +331,4 @@
 ;; docs: add usage example for is-frozen
 ;; docs: add usage example for get-transfer-history
 ;; docs: add usage example for get-transfer-count
+;; docs: add usage example for get-dispute
