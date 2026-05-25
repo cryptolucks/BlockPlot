@@ -327,3 +327,4 @@
 ;; docs: add usage example for file-dispute
 ;; docs: add usage example for resolve-dispute
 ;; docs: add usage example for get-owner
+;; docs: add usage example for get-document-hash
