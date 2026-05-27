@@ -463,3 +463,7 @@
 ### Commit 132: docs: annotate success modal state variables in register page
 - Annotated variables for success modal to track application state transition flow.
 - Timestamp: Wed 27 May 2026 20:12:46 UTC
+
+### Commit 133: refactor: optimize modal centering mobile responsive layout in register view
+- Optimized CSS styling classes for modal centering to prevent cumulative layout shift on mobile screens.
+- Timestamp: Wed 27 May 2026 20:12:46 UTC
