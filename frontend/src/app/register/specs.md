@@ -1231,3 +1231,7 @@
 ### Commit 324: docs: annotate area validation state variables in register page
 - Annotated variables for area validation to track application state transition flow.
 - Timestamp: Wed 27 May 2026 20:12:56 UTC
+
+### Commit 325: refactor: optimize split grid mobile responsive layout in register view
+- Optimized CSS styling classes for split grid to prevent cumulative layout shift on mobile screens.
+- Timestamp: Wed 27 May 2026 20:12:56 UTC
