@@ -299,3 +299,7 @@
 ### Commit 91: refactor: optimize form alignment mobile responsive layout in register view
 - Optimized CSS styling classes for form alignment to prevent cumulative layout shift on mobile screens.
 - Timestamp: Wed 27 May 2026 20:12:43 UTC
+
+### Commit 92: style: refine form container borders and glassmorphism background blur
+- Adjusted backdrop-filter and border border-white/5 styling of form container to enhance aesthetics.
+- Timestamp: Wed 27 May 2026 20:12:44 UTC
