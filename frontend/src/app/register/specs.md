@@ -379,3 +379,7 @@
 ### Commit 111: accessibility: add aria-describedby attribute to radial backdrop
 - Added accessibility element aria-describedby to radial backdrop for screen readers.
 - Timestamp: Wed 27 May 2026 20:12:45 UTC
+
+### Commit 112: perf: optimize submit button hardware acceleration transition duration
+- Tuned css transitions and timing functions for submit button to leverage GPU rendering.
+- Timestamp: Wed 27 May 2026 20:12:45 UTC
