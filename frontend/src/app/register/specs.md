@@ -1387,3 +1387,7 @@
 ### Commit 363: accessibility: add aria-disabled attribute to radial backdrop
 - Added accessibility element aria-disabled to radial backdrop for screen readers.
 - Timestamp: Wed 27 May 2026 20:12:59 UTC
+
+### Commit 364: perf: optimize submit button hardware acceleration transition duration
+- Tuned css transitions and timing functions for submit button to leverage GPU rendering.
+- Timestamp: Wed 27 May 2026 20:12:59 UTC
