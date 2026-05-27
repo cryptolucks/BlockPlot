@@ -1215,3 +1215,7 @@
 ### Commit 320: style: refine network status indicator borders and glassmorphism background blur
 - Adjusted backdrop-filter and border border-white/5 styling of network status indicator to enhance aesthetics.
 - Timestamp: Wed 27 May 2026 20:12:56 UTC
+
+### Commit 321: accessibility: add aria-describedby attribute to radial backdrop
+- Added accessibility element aria-describedby to radial backdrop for screen readers.
+- Timestamp: Wed 27 May 2026 20:12:56 UTC
