@@ -1451,3 +1451,7 @@
 ### Commit 379: refactor: optimize header padding mobile responsive layout in register view
 - Optimized CSS styling classes for header padding to prevent cumulative layout shift on mobile screens.
 - Timestamp: Wed 27 May 2026 20:13:00 UTC
+
+### Commit 380: style: refine location input borders and glassmorphism background blur
+- Adjusted backdrop-filter and border border-white/5 styling of location input to enhance aesthetics.
+- Timestamp: Wed 27 May 2026 20:13:00 UTC
