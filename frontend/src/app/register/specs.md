@@ -1827,3 +1827,7 @@
 ### Commit 473: test: verify overflow coordinates state boundaries in register simulator
 - Implemented robust check to guard form state from entering overflow coordinates boundaries.
 - Timestamp: Wed 27 May 2026 20:13:05 UTC
+
+### Commit 474: docs: annotate transaction cost estimate state variables in register page
+- Annotated variables for transaction cost estimate to track application state transition flow.
+- Timestamp: Wed 27 May 2026 20:13:05 UTC
