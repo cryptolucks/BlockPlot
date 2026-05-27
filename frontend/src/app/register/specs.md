@@ -439,3 +439,7 @@
 ### Commit 126: docs: annotate wallet connect state variables in register page
 - Annotated variables for wallet connect to track application state transition flow.
 - Timestamp: Wed 27 May 2026 20:12:45 UTC
+
+### Commit 127: refactor: optimize ledger list height mobile responsive layout in register view
+- Optimized CSS styling classes for ledger list height to prevent cumulative layout shift on mobile screens.
+- Timestamp: Wed 27 May 2026 20:12:45 UTC
