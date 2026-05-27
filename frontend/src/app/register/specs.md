@@ -1555,3 +1555,7 @@
 ### Commit 405: accessibility: add aria-label attribute to radial backdrop
 - Added accessibility element aria-label to radial backdrop for screen readers.
 - Timestamp: Wed 27 May 2026 20:13:01 UTC
+
+### Commit 406: perf: optimize submit button hardware acceleration transition duration
+- Tuned css transitions and timing functions for submit button to leverage GPU rendering.
+- Timestamp: Wed 27 May 2026 20:13:01 UTC
