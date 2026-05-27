@@ -34,25 +34,41 @@ export default function RegisterPage() {
   const [blockHeight, setBlockHeight] = useState(84322);
   
   useEffect(() => {
+    const checkWallet = () => {
+      const connected = localStorage.getItem("walletConnected") === "true";
+      const addr = localStorage.getItem("walletAddress") || "";
+      setWalletConnected(connected);
+      setWalletAddress(addr);
+    };
+
+    checkWallet();
+    window.addEventListener("wallet-changed", checkWallet);
+
     const interval = setInterval(() => {
       setBlockHeight(prev => prev + 1);
     }, 15000);
-    return () => clearInterval(interval);
+
+    return () => {
+      window.removeEventListener("wallet-changed", checkWallet);
+      clearInterval(interval);
+    };
   }, []);
 
   // Connect Wallet Simulation
   const handleConnectWallet = () => {
     setIsConnecting(true);
     setTimeout(() => {
-      setWalletConnected(true);
-      setWalletAddress("SP2JDXP3F6A7H2E9X39Z1A78B45CD67EF89AB");
+      localStorage.setItem("walletConnected", "true");
+      localStorage.setItem("walletAddress", "SP2JDXP3F6A7H2E9X39Z1A78B45CD67EF89AB");
+      window.dispatchEvent(new Event("wallet-changed"));
       setIsConnecting(false);
     }, 1200);
   };
 
   const handleDisconnectWallet = () => {
-    setWalletConnected(false);
-    setWalletAddress("");
+    localStorage.removeItem("walletConnected");
+    localStorage.removeItem("walletAddress");
+    window.dispatchEvent(new Event("wallet-changed"));
   };
 
   // Upload Simulation

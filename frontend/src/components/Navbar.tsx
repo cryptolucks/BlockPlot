@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const links = [
   { label: "Features", href: "/#features" },
@@ -11,6 +11,38 @@ const links = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [walletConnected, setWalletConnected] = useState(false);
+  const [walletAddress, setWalletAddress] = useState("");
+  const [isConnecting, setIsConnecting] = useState(false);
+
+  useEffect(() => {
+    const checkWallet = () => {
+      const connected = localStorage.getItem("walletConnected") === "true";
+      const addr = localStorage.getItem("walletAddress") || "";
+      setWalletConnected(connected);
+      setWalletAddress(addr);
+    };
+
+    checkWallet();
+    window.addEventListener("wallet-changed", checkWallet);
+    return () => window.removeEventListener("wallet-changed", checkWallet);
+  }, []);
+
+  const handleConnect = () => {
+    setIsConnecting(true);
+    setTimeout(() => {
+      localStorage.setItem("walletConnected", "true");
+      localStorage.setItem("walletAddress", "SP2JDXP3F6A7H2E9X39Z1A78B45CD67EF89AB");
+      window.dispatchEvent(new Event("wallet-changed"));
+      setIsConnecting(false);
+    }, 1000);
+  };
+
+  const handleDisconnect = () => {
+    localStorage.removeItem("walletConnected");
+    localStorage.removeItem("walletAddress");
+    window.dispatchEvent(new Event("wallet-changed"));
+  };
 
   return (
     <nav className="fixed top-0 inset-x-0 z-50 bg-brand-dark/80 backdrop-blur border-b border-white/5">
@@ -33,12 +65,54 @@ export default function Navbar() {
         </ul>
 
         {/* CTA */}
-        <a
-          href="/register"
-          className="hidden md:inline-flex items-center gap-2 bg-brand-orange text-black text-sm font-semibold px-4 py-2 rounded-lg hover:bg-orange-400 transition-colors shadow-[0_0_15px_rgba(247,147,26,0.2)]"
-        >
-          Launch App
-        </a>
+        <div className="hidden md:flex items-center gap-4">
+          <a
+            href="/register"
+            className="text-sm text-gray-400 hover:text-white transition-colors mr-2 font-medium"
+          >
+            Launch App
+          </a>
+          
+          {walletConnected ? (
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 bg-green-500/10 border border-green-500/20 px-3 py-1.5 rounded-lg">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                <span className="text-xs font-mono text-green-400">
+                  {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}
+                </span>
+              </div>
+              <button
+                onClick={handleDisconnect}
+                className="text-xs text-gray-400 hover:text-white transition-colors bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-lg border border-white/5"
+              >
+                Disconnect
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={handleConnect}
+              disabled={isConnecting}
+              className="inline-flex items-center gap-2 bg-brand-orange text-black text-sm font-semibold px-4 py-2 rounded-lg hover:bg-orange-400 transition-colors shadow-[0_0_15px_rgba(247,147,26,0.2)] disabled:opacity-50"
+            >
+              {isConnecting ? (
+                <>
+                  <svg className="animate-spin h-3.5 w-3.5 text-black" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                  </svg>
+                  Connecting...
+                </>
+              ) : (
+                <>
+                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z" />
+                  </svg>
+                  Connect Wallet
+                </>
+              )}
+            </button>
+          )}
+        </div>
 
         {/* Mobile toggle */}
         <button
@@ -65,11 +139,42 @@ export default function Navbar() {
           ))}
           <a
             href="/register"
-            className="mt-2 bg-brand-orange text-black font-semibold px-4 py-2 rounded-lg text-center"
             onClick={() => setOpen(false)}
+            className="text-center py-2 text-gray-400 hover:text-white transition-colors border-t border-white/5 pt-4"
           >
             Launch App
           </a>
+          
+          {walletConnected ? (
+            <div className="flex flex-col gap-2">
+              <div className="bg-green-500/10 border border-green-500/20 px-3 py-2 rounded-lg flex items-center justify-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                <span className="text-xs font-mono text-green-400">
+                  {walletAddress.slice(0, 8)}...{walletAddress.slice(-6)}
+                </span>
+              </div>
+              <button
+                onClick={() => {
+                  handleDisconnect();
+                  setOpen(false);
+                }}
+                className="bg-white/5 hover:bg-white/10 text-white font-semibold px-4 py-2 rounded-lg text-center border border-white/5"
+              >
+                Disconnect Wallet
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => {
+                handleConnect();
+                setOpen(false);
+              }}
+              disabled={isConnecting}
+              className="bg-brand-orange text-black font-semibold px-4 py-2 rounded-lg text-center disabled:opacity-50"
+            >
+              {isConnecting ? "Connecting..." : "Connect Wallet"}
+            </button>
+          )}
         </div>
       )}
     </nav>
