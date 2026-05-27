@@ -111,3 +111,7 @@
 ### Commit 44: style: refine location input borders and glassmorphism background blur
 - Adjusted backdrop-filter and border border-white/5 styling of location input to enhance aesthetics.
 - Timestamp: Wed 27 May 2026 20:12:41 UTC
+
+### Commit 45: accessibility: add aria-label attribute to upload dropzone
+- Added accessibility element aria-label to upload dropzone for screen readers.
+- Timestamp: Wed 27 May 2026 20:12:41 UTC
