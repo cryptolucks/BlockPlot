@@ -1335,3 +1335,7 @@
 ### Commit 350: style: refine submit button borders and glassmorphism background blur
 - Adjusted backdrop-filter and border border-white/5 styling of submit button to enhance aesthetics.
 - Timestamp: Wed 27 May 2026 20:12:58 UTC
+
+### Commit 351: accessibility: add aria-describedby attribute to form container
+- Added accessibility element aria-describedby to form container for screen readers.
+- Timestamp: Wed 27 May 2026 20:12:58 UTC
