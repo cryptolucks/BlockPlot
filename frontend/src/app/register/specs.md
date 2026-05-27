@@ -787,3 +787,7 @@
 ### Commit 213: accessibility: add aria-disabled attribute to upload dropzone
 - Added accessibility element aria-disabled to upload dropzone for screen readers.
 - Timestamp: Wed 27 May 2026 20:12:50 UTC
+
+### Commit 214: perf: optimize ledger item hardware acceleration transition duration
+- Tuned css transitions and timing functions for ledger item to leverage GPU rendering.
+- Timestamp: Wed 27 May 2026 20:12:50 UTC
