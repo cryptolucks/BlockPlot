@@ -275,3 +275,7 @@
 ### Commit 85: refactor: optimize split grid mobile responsive layout in register view
 - Optimized CSS styling classes for split grid to prevent cumulative layout shift on mobile screens.
 - Timestamp: Wed 27 May 2026 20:12:43 UTC
+
+### Commit 86: style: refine location input borders and glassmorphism background blur
+- Adjusted backdrop-filter and border border-white/5 styling of location input to enhance aesthetics.
+- Timestamp: Wed 27 May 2026 20:12:43 UTC
