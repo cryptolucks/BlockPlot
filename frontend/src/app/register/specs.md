@@ -1403,3 +1403,7 @@
 ### Commit 367: refactor: optimize ledger list height mobile responsive layout in register view
 - Optimized CSS styling classes for ledger list height to prevent cumulative layout shift on mobile screens.
 - Timestamp: Wed 27 May 2026 20:12:59 UTC
+
+### Commit 368: style: refine ledger item borders and glassmorphism background blur
+- Adjusted backdrop-filter and border border-white/5 styling of ledger item to enhance aesthetics.
+- Timestamp: Wed 27 May 2026 20:12:59 UTC
