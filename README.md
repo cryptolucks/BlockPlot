@@ -1,12 +1,28 @@
 # BlockPlot
 
-A decentralized land registry platform built on the **Stacks blockchain** using **Clarity** smart contracts for secure, transparent, and tamper-proof property ownership management.
+A premium, decentralized land registry platform built on the **Stacks blockchain** using **Clarity** smart contracts for secure, transparent, and tamper-proof property ownership management.
+
+🚀 **Live Web App:** [https://blockplot.vercel.app](https://blockplot.vercel.app)
+
+---
 
 ## Overview
 
 BlockPlot modernizes land registration by replacing traditional paper-based systems with a decentralized solution built on Stacks — a Bitcoin-secured Layer 2 blockchain. The platform enables property owners, buyers, and government authorities to securely register, verify, and transfer land ownership records on-chain.
 
 By leveraging Stacks and Clarity, BlockPlot benefits from Bitcoin's security model while enabling programmable, auditable smart contracts.
+
+---
+
+## Interactive Web3 Application
+
+The BlockPlot frontend is a high-fidelity Next.js web application showcasing a full property administration dashboard:
+
+* **Sleek Web3 Portal:** Secure land registration page live at `/register`.
+* **Synchronized Wallet Connection:** Unified simulated Stacks Hiro Wallet connection synced across the global header and registration cards in real-time.
+* **IPFS Title Seal:** Drag-and-drop deed upload simulator producing cryptographic IPFS hashes.
+* **Grid Coordinate Visualizer:** Fully dynamic layout plotting geometric land block sizes (m²) on a coordinate grid interface.
+* **On-Chain Land Ledger:** Real-time block height updates and transaction record streaming logs.
 
 ---
 
