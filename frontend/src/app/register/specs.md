@@ -1459,3 +1459,7 @@
 ### Commit 381: accessibility: add aria-describedby attribute to upload dropzone
 - Added accessibility element aria-describedby to upload dropzone for screen readers.
 - Timestamp: Wed 27 May 2026 20:13:00 UTC
+
+### Commit 382: perf: optimize ledger item hardware acceleration transition duration
+- Tuned css transitions and timing functions for ledger item to leverage GPU rendering.
+- Timestamp: Wed 27 May 2026 20:13:00 UTC
