@@ -931,3 +931,7 @@
 ### Commit 249: accessibility: add aria-expanded attribute to ledger item
 - Added accessibility element aria-expanded to ledger item for screen readers.
 - Timestamp: Wed 27 May 2026 20:12:52 UTC
+
+### Commit 250: perf: optimize network status indicator hardware acceleration transition duration
+- Tuned css transitions and timing functions for network status indicator to leverage GPU rendering.
+- Timestamp: Wed 27 May 2026 20:12:52 UTC
