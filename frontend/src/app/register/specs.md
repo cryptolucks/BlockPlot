@@ -227,3 +227,7 @@
 ### Commit 73: refactor: optimize modal centering mobile responsive layout in register view
 - Optimized CSS styling classes for modal centering to prevent cumulative layout shift on mobile screens.
 - Timestamp: Wed 27 May 2026 20:12:42 UTC
+
+### Commit 74: style: refine ledger item borders and glassmorphism background blur
+- Adjusted backdrop-filter and border border-white/5 styling of ledger item to enhance aesthetics.
+- Timestamp: Wed 27 May 2026 20:12:43 UTC
