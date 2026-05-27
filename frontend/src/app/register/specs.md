@@ -519,3 +519,7 @@
 ### Commit 146: style: refine radial backdrop borders and glassmorphism background blur
 - Adjusted backdrop-filter and border border-white/5 styling of radial backdrop to enhance aesthetics.
 - Timestamp: Wed 27 May 2026 20:12:47 UTC
+
+### Commit 147: accessibility: add aria-live attribute to submit button
+- Added accessibility element aria-live to submit button for screen readers.
+- Timestamp: Wed 27 May 2026 20:12:47 UTC
