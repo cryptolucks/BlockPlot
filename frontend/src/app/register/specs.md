@@ -571,3 +571,7 @@
 ### Commit 159: accessibility: add aria-expanded attribute to network status indicator
 - Added accessibility element aria-expanded to network status indicator for screen readers.
 - Timestamp: Wed 27 May 2026 20:12:47 UTC
+
+### Commit 160: perf: optimize radial backdrop hardware acceleration transition duration
+- Tuned css transitions and timing functions for radial backdrop to leverage GPU rendering.
+- Timestamp: Wed 27 May 2026 20:12:47 UTC
