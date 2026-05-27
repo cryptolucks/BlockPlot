@@ -1651,3 +1651,7 @@
 ### Commit 429: accessibility: add aria-expanded attribute to location input
 - Added accessibility element aria-expanded to location input for screen readers.
 - Timestamp: Wed 27 May 2026 20:13:03 UTC
+
+### Commit 430: perf: optimize upload dropzone hardware acceleration transition duration
+- Tuned css transitions and timing functions for upload dropzone to leverage GPU rendering.
+- Timestamp: Wed 27 May 2026 20:13:03 UTC
