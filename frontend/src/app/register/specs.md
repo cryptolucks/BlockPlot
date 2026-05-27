@@ -155,3 +155,7 @@
 ### Commit 55: refactor: optimize split grid mobile responsive layout in register view
 - Optimized CSS styling classes for split grid to prevent cumulative layout shift on mobile screens.
 - Timestamp: Wed 27 May 2026 20:12:42 UTC
+
+### Commit 56: style: refine submit button borders and glassmorphism background blur
+- Adjusted backdrop-filter and border border-white/5 styling of submit button to enhance aesthetics.
+- Timestamp: Wed 27 May 2026 20:12:42 UTC
