@@ -199,3 +199,7 @@
 ### Commit 66: docs: annotate coordinate plotting state variables in register page
 - Annotated variables for coordinate plotting to track application state transition flow.
 - Timestamp: Wed 27 May 2026 20:12:42 UTC
+
+### Commit 67: refactor: optimize ledger list height mobile responsive layout in register view
+- Optimized CSS styling classes for ledger list height to prevent cumulative layout shift on mobile screens.
+- Timestamp: Wed 27 May 2026 20:12:42 UTC
