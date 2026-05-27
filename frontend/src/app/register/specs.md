@@ -751,3 +751,7 @@
 ### Commit 204: docs: annotate IPFS upload state variables in register page
 - Annotated variables for IPFS upload to track application state transition flow.
 - Timestamp: Wed 27 May 2026 20:12:50 UTC
+
+### Commit 205: refactor: optimize split grid mobile responsive layout in register view
+- Optimized CSS styling classes for split grid to prevent cumulative layout shift on mobile screens.
+- Timestamp: Wed 27 May 2026 20:12:50 UTC
