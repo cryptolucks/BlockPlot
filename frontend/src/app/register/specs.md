@@ -799,3 +799,7 @@
 ### Commit 216: docs: annotate success modal state variables in register page
 - Annotated variables for success modal to track application state transition flow.
 - Timestamp: Wed 27 May 2026 20:12:50 UTC
+
+### Commit 217: refactor: optimize ledger list height mobile responsive layout in register view
+- Optimized CSS styling classes for ledger list height to prevent cumulative layout shift on mobile screens.
+- Timestamp: Wed 27 May 2026 20:12:50 UTC
