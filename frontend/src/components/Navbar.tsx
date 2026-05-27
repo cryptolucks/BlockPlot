@@ -3,10 +3,10 @@
 import { useState } from "react";
 
 const links = [
-  { label: "Features", href: "#features" },
-  { label: "How It Works", href: "#how-it-works" },
-  { label: "Tech Stack", href: "#tech-stack" },
-  { label: "FAQ", href: "#faq" },
+  { label: "Features", href: "/#features" },
+  { label: "How It Works", href: "/#how-it-works" },
+  { label: "Tech Stack", href: "/#tech-stack" },
+  { label: "FAQ", href: "/#faq" },
 ];
 
 export default function Navbar() {
@@ -16,7 +16,7 @@ export default function Navbar() {
     <nav className="fixed top-0 inset-x-0 z-50 bg-brand-dark/80 backdrop-blur border-b border-white/5">
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         {/* Logo */}
-        <a href="#" className="flex items-center gap-2 font-bold text-lg">
+        <a href="/" className="flex items-center gap-2 font-bold text-lg">
           <span className="text-brand-orange">Block</span>
           <span className="text-white">Plot</span>
         </a>
@@ -34,8 +34,8 @@ export default function Navbar() {
 
         {/* CTA */}
         <a
-          href="#get-started"
-          className="hidden md:inline-flex items-center gap-2 bg-brand-orange text-black text-sm font-semibold px-4 py-2 rounded-lg hover:bg-orange-400 transition-colors"
+          href="/register"
+          className="hidden md:inline-flex items-center gap-2 bg-brand-orange text-black text-sm font-semibold px-4 py-2 rounded-lg hover:bg-orange-400 transition-colors shadow-[0_0_15px_rgba(247,147,26,0.2)]"
         >
           Launch App
         </a>
@@ -64,7 +64,7 @@ export default function Navbar() {
             </a>
           ))}
           <a
-            href="#get-started"
+            href="/register"
             className="mt-2 bg-brand-orange text-black font-semibold px-4 py-2 rounded-lg text-center"
             onClick={() => setOpen(false)}
           >
