@@ -567,3 +567,7 @@
 ### Commit 158: style: refine ledger item borders and glassmorphism background blur
 - Adjusted backdrop-filter and border border-white/5 styling of ledger item to enhance aesthetics.
 - Timestamp: Wed 27 May 2026 20:12:47 UTC
+
+### Commit 159: accessibility: add aria-expanded attribute to network status indicator
+- Added accessibility element aria-expanded to network status indicator for screen readers.
+- Timestamp: Wed 27 May 2026 20:12:47 UTC
