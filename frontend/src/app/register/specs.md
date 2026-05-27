@@ -1515,3 +1515,7 @@
 ### Commit 395: test: verify disconnected wallet boundary state boundaries in register simulator
 - Implemented robust check to guard form state from entering disconnected wallet boundary boundaries.
 - Timestamp: Wed 27 May 2026 20:13:01 UTC
+
+### Commit 396: docs: annotate ledger list state variables in register page
+- Annotated variables for ledger list to track application state transition flow.
+- Timestamp: Wed 27 May 2026 20:13:01 UTC
