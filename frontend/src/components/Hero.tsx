@@ -26,8 +26,8 @@ export default function Hero() {
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <a
-            href="#get-started"
-            className="w-full sm:w-auto bg-brand-orange text-black font-bold px-8 py-3.5 rounded-xl hover:bg-orange-400 transition-colors text-base"
+            href="/register"
+            className="w-full sm:w-auto bg-brand-orange text-black font-bold px-8 py-3.5 rounded-xl hover:bg-orange-400 transition-colors text-base shadow-[0_0_15px_rgba(247,147,26,0.2)]"
           >
             Register Land
           </a>
