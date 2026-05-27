@@ -1519,3 +1519,7 @@
 ### Commit 396: docs: annotate ledger list state variables in register page
 - Annotated variables for ledger list to track application state transition flow.
 - Timestamp: Wed 27 May 2026 20:13:01 UTC
+
+### Commit 397: refactor: optimize ledger list height mobile responsive layout in register view
+- Optimized CSS styling classes for ledger list height to prevent cumulative layout shift on mobile screens.
+- Timestamp: Wed 27 May 2026 20:13:01 UTC
