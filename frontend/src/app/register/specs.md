@@ -1435,3 +1435,7 @@
 ### Commit 375: accessibility: add aria-label attribute to ledger item
 - Added accessibility element aria-label to ledger item for screen readers.
 - Timestamp: Wed 27 May 2026 20:13:00 UTC
+
+### Commit 376: perf: optimize network status indicator hardware acceleration transition duration
+- Tuned css transitions and timing functions for network status indicator to leverage GPU rendering.
+- Timestamp: Wed 27 May 2026 20:13:00 UTC
