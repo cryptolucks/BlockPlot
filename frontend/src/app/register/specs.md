@@ -487,3 +487,7 @@
 ### Commit 138: docs: annotate transaction cost estimate state variables in register page
 - Annotated variables for transaction cost estimate to track application state transition flow.
 - Timestamp: Wed 27 May 2026 20:12:46 UTC
+
+### Commit 139: refactor: optimize header padding mobile responsive layout in register view
+- Optimized CSS styling classes for header padding to prevent cumulative layout shift on mobile screens.
+- Timestamp: Wed 27 May 2026 20:12:46 UTC
