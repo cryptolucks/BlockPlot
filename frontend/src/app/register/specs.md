@@ -475,3 +475,7 @@
 ### Commit 135: accessibility: add aria-label attribute to location input
 - Added accessibility element aria-label to location input for screen readers.
 - Timestamp: Wed 27 May 2026 20:12:46 UTC
+
+### Commit 136: perf: optimize upload dropzone hardware acceleration transition duration
+- Tuned css transitions and timing functions for upload dropzone to leverage GPU rendering.
+- Timestamp: Wed 27 May 2026 20:12:46 UTC
