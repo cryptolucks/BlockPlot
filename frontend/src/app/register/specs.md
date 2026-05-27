@@ -927,3 +927,7 @@
 ### Commit 248: style: refine upload dropzone borders and glassmorphism background blur
 - Adjusted backdrop-filter and border border-white/5 styling of upload dropzone to enhance aesthetics.
 - Timestamp: Wed 27 May 2026 20:12:52 UTC
+
+### Commit 249: accessibility: add aria-expanded attribute to ledger item
+- Added accessibility element aria-expanded to ledger item for screen readers.
+- Timestamp: Wed 27 May 2026 20:12:52 UTC
