@@ -1,17 +1,16 @@
 import {
-  PostConditionMode,
   uintCV,
   stringAsciiCV,
   principalCV,
   cvToJSON,
   fetchCallReadOnlyFunction,
 } from "@stacks/transactions";
-import { openContractCall } from "@stacks/connect";
 import {
   CONTRACT_ADDRESS,
   CONTRACT_NAME,
   FUNCTIONS,
   STACKS_API_URL,
+  NETWORK_TYPE,
 } from "./constants";
 
 // ─── Types ───────────────────────────────────────────────────────────
@@ -46,7 +45,7 @@ export interface LandRecord {
 
 /**
  * Register a new land parcel on-chain.
- * Opens the Hiro Wallet for the user to sign and broadcast.
+ * Opens the wallet for the user to sign and broadcast.
  */
 export async function registerLand({
   location,
@@ -56,27 +55,28 @@ export async function registerLand({
   onFinish,
   onCancel,
 }: RegisterLandParams) {
-  await openContractCall({
-    contractAddress: CONTRACT_ADDRESS,
-    contractName: CONTRACT_NAME,
-    functionName: FUNCTIONS.REGISTER_LAND,
-    functionArgs: [
-      stringAsciiCV(location),
-      uintCV(area),
-      stringAsciiCV(documentHash),
-    ],
-    postConditionMode: PostConditionMode.Deny,
-    postConditions: [],
-    onFinish: (data) => {
-      onFinish(data.txId);
-    },
-    onCancel,
-  });
+  try {
+    const { request } = await import("@stacks/connect");
+    const response = await request("stx_callContract", {
+      contractAddress: CONTRACT_ADDRESS,
+      contractName: CONTRACT_NAME,
+      functionName: FUNCTIONS.REGISTER_LAND,
+      functionArgs: [
+        stringAsciiCV(location),
+        uintCV(area),
+        stringAsciiCV(documentHash),
+      ],
+      network: NETWORK_TYPE,
+    });
+    onFinish(response.txId);
+  } catch {
+    onCancel();
+  }
 }
 
 /**
  * Transfer ownership of a land parcel.
- * Opens the Hiro Wallet for the user to sign and broadcast.
+ * Opens the wallet for the user to sign and broadcast.
  */
 export async function transferLand({
   landId,
@@ -85,18 +85,19 @@ export async function transferLand({
   onFinish,
   onCancel,
 }: TransferLandParams) {
-  await openContractCall({
-    contractAddress: CONTRACT_ADDRESS,
-    contractName: CONTRACT_NAME,
-    functionName: FUNCTIONS.TRANSFER_LAND,
-    functionArgs: [uintCV(landId), principalCV(newOwner)],
-    postConditionMode: PostConditionMode.Deny,
-    postConditions: [],
-    onFinish: (data) => {
-      onFinish(data.txId);
-    },
-    onCancel,
-  });
+  try {
+    const { request } = await import("@stacks/connect");
+    const response = await request("stx_callContract", {
+      contractAddress: CONTRACT_ADDRESS,
+      contractName: CONTRACT_NAME,
+      functionName: FUNCTIONS.TRANSFER_LAND,
+      functionArgs: [uintCV(landId), principalCV(newOwner)],
+      network: NETWORK_TYPE,
+    });
+    onFinish(response.txId);
+  } catch {
+    onCancel();
+  }
 }
 
 // ─── Read-Only Functions (no wallet needed) ──────────────────────────
