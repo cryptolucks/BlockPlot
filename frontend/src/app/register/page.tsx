@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useWallet } from "@/context/WalletContext";
+import { registerLand } from "@/lib/contract";
 
 // Mock recent registrations
 const INITIAL_PARCELS = [
@@ -10,9 +12,7 @@ const INITIAL_PARCELS = [
 ];
 
 export default function RegisterPage() {
-  const [walletConnected, setWalletConnected] = useState(false);
-  const [isConnecting, setIsConnecting] = useState(false);
-  const [walletAddress, setWalletAddress] = useState("");
+  const { isConnected: walletConnected, isConnecting, address: walletAddress, connect: handleConnectWallet, disconnect: handleDisconnectWallet } = useWallet();
   
   // Form states
   const [location, setLocation] = useState("");
@@ -34,42 +34,14 @@ export default function RegisterPage() {
   const [blockHeight, setBlockHeight] = useState(84322);
   
   useEffect(() => {
-    const checkWallet = () => {
-      const connected = localStorage.getItem("walletConnected") === "true";
-      const addr = localStorage.getItem("walletAddress") || "";
-      setWalletConnected(connected);
-      setWalletAddress(addr);
-    };
-
-    checkWallet();
-    window.addEventListener("wallet-changed", checkWallet);
-
     const interval = setInterval(() => {
       setBlockHeight(prev => prev + 1);
     }, 15000);
 
     return () => {
-      window.removeEventListener("wallet-changed", checkWallet);
       clearInterval(interval);
     };
   }, []);
-
-  // Connect Wallet Simulation
-  const handleConnectWallet = () => {
-    setIsConnecting(true);
-    setTimeout(() => {
-      localStorage.setItem("walletConnected", "true");
-      localStorage.setItem("walletAddress", "SP2JDXP3F6A7H2E9X39Z1A78B45CD67EF89AB");
-      window.dispatchEvent(new Event("wallet-changed"));
-      setIsConnecting(false);
-    }, 1200);
-  };
-
-  const handleDisconnectWallet = () => {
-    localStorage.removeItem("walletConnected");
-    localStorage.removeItem("walletAddress");
-    window.dispatchEvent(new Event("wallet-changed"));
-  };
 
   // Upload Simulation
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -94,36 +66,47 @@ export default function RegisterPage() {
     }, 100);
   };
 
-  // Submit Simulation
-  const handleRegister = (e: React.FormEvent) => {
+  // Submit via real contract call
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!location || !area || !docHash || !walletConnected) return;
 
     setIsSubmitting(true);
-    setTimeout(() => {
-      const newId = parcels.length > 0 ? parcels[0].id + 1 : 101;
-      const newParcel = {
-        id: newId,
+    try {
+      await registerLand({
         location,
         area: Number(area),
-        hash: docHash,
-        owner: walletAddress,
-        height: blockHeight + 1,
-      };
+        documentHash: docHash,
+        senderAddress: walletAddress,
+        onFinish: (txId: string) => {
+          const newId = parcels.length > 0 ? parcels[0].id + 1 : 101;
+          const newParcel = {
+            id: newId,
+            location,
+            area: Number(area),
+            hash: docHash,
+            owner: walletAddress,
+            height: blockHeight + 1,
+          };
 
-      setParcels([newParcel, ...parcels]);
-      setRegisteredId(newId);
-      setTxHash("0x" + Array.from({ length: 64 }, () => 
-        "0123456789abcdef"[Math.floor(Math.random() * 16)]
-      ).join(""));
-      setSuccess(true);
+          setParcels([newParcel, ...parcels]);
+          setRegisteredId(newId);
+          setTxHash(txId);
+          setSuccess(true);
+          setIsSubmitting(false);
+
+          // Clear form
+          setLocation("");
+          setArea("");
+          setDocHash("");
+        },
+        onCancel: () => {
+          setIsSubmitting(false);
+        },
+      });
+    } catch {
       setIsSubmitting(false);
-      
-      // Clear form
-      setLocation("");
-      setArea("");
-      setDocHash("");
-    }, 2000);
+    }
   };
 
   // Grid Coordinate Simulation
