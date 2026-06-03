@@ -15,6 +15,7 @@
 (define-constant ERR-DISPUTE-EXISTS (err u107))
 (define-constant ERR-NO-DISPUTE (err u108))
 (define-constant ERR-INVALID-HASH (err u109))
+(define-constant ERR-INVALID-REASON (err u110))
 
 ;; Data Maps
 
@@ -60,6 +61,13 @@
 
 (define-private (land-exists? (land-id uint))
   (is-some (map-get? lands { land-id: land-id }))
+)
+
+(define-private (is-dispute-active? (land-id uint))
+  (match (map-get? disputes { land-id: land-id })
+    dispute (not (get resolved dispute))
+    false
+  )
 )
 
 (define-private (record-transfer (land-id uint) (from principal) (to principal))
@@ -111,7 +119,7 @@
       (asserts! (is-eq (get owner land) tx-sender) ERR-UNAUTHORIZED)
       (asserts! (not (is-eq tx-sender new-owner)) ERR-SELF-TRANSFER)
       (asserts! (not (get frozen land)) ERR-LAND-FROZEN)
-      (asserts! (is-none (map-get? disputes { land-id: land-id })) ERR-DISPUTE-EXISTS)
+      (asserts! (not (is-dispute-active? land-id)) ERR-DISPUTE-EXISTS)
       (record-transfer land-id tx-sender new-owner)
       (map-set lands
         { land-id: land-id }
@@ -167,19 +175,21 @@
 (define-public (file-dispute (land-id uint) (reason (string-ascii 256)))
   (begin
     (asserts! (> land-id u0) ERR-NOT-FOUND)
-    (asserts! (> (len reason) u0) ERR-INVALID-LOCATION)
-    (asserts! (land-exists? land-id) ERR-NOT-FOUND)
-    (asserts! (is-none (map-get? disputes { land-id: land-id })) ERR-DISPUTE-EXISTS)
-    (map-set disputes
-      { land-id: land-id }
-      {
-        claimant: tx-sender,
-        reason: reason,
-        filed-at: burn-block-height,
-        resolved: false
-      }
+    (asserts! (> (len reason) u0) ERR-INVALID-REASON)
+    (let ((land (unwrap! (map-get? lands { land-id: land-id }) ERR-NOT-FOUND)))
+      (asserts! (not (is-eq tx-sender (get owner land))) ERR-UNAUTHORIZED)
+      (asserts! (not (is-dispute-active? land-id)) ERR-DISPUTE-EXISTS)
+      (map-set disputes
+        { land-id: land-id }
+        {
+          claimant: tx-sender,
+          reason: reason,
+          filed-at: burn-block-height,
+          resolved: false
+        }
+      )
+      (ok true)
     )
-    (ok true)
   )
 )
 
