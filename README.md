@@ -125,6 +125,13 @@ Returns `(ok true)` if `claimant` is the registered owner of the given land parc
 | `u100` | `ERR-ALREADY-REGISTERED` | Land ID already exists |
 | `u101` | `ERR-NOT-FOUND` | Land ID not found |
 | `u102` | `ERR-UNAUTHORIZED` | Caller not authorized |
+| `u103` | `ERR-INVALID-AREA` | Area must be greater than 0 |
+| `u104` | `ERR-INVALID-LOCATION` | Location must not be empty |
+| `u105` | `ERR-SELF-TRANSFER` | Cannot transfer land to the current owner |
+| `u106` | `ERR-LAND-FROZEN` | Land parcel is frozen |
+| `u107` | `ERR-DISPUTE-EXISTS` | Active dispute already exists |
+| `u108` | `ERR-NO-DISPUTE` | No dispute found |
+| `u109` | `ERR-INVALID-HASH` | Document hash must not be empty |
 
 ---
 
@@ -158,7 +165,7 @@ clarinet console
 Example — register a land parcel:
 
 ```clarity
-(contract-call? .blockplot register-land "Lagos, Plot 42" u500)
+(contract-call? .blockplot register-land "Lagos, Plot 42" u500 "QmExampleHashHere1234567890abcdefABCDEF12345678")
 ```
 
 Example — verify ownership:

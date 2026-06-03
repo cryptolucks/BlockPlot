@@ -8,7 +8,7 @@ import {
   useCallback,
   type ReactNode,
 } from "react";
-import { connect as stacksConnect, disconnect as stacksDisconnect } from "@stacks/connect";
+import { showConnect } from "@stacks/connect";
 import { APP_NAME, APP_ICON } from "@/lib/constants";
 
 // ─── Types ───────────────────────────────────────────────────────────
@@ -77,30 +77,33 @@ export function WalletProvider({ children }: { children: ReactNode }) {
   }, []);
 
   // Connect wallet via @stacks/connect
-  const connect = useCallback(async () => {
+  const connect = useCallback(() => {
     setIsConnecting(true);
-    try {
-      const response = await stacksConnect();
-      const stxAddress = response?.addresses?.find((addr: any) => addr.address.startsWith("S"))?.address || "";
-      if (stxAddress) {
-        setAddress(stxAddress);
-        setIsConnected(true);
-        persistState(true, stxAddress);
-      }
-    } catch (error) {
-      console.error("Wallet connection failed:", error);
-    } finally {
-      setIsConnecting(false);
-    }
+
+    showConnect({
+      appDetails: {
+        name: APP_NAME,
+        icon: APP_ICON,
+      },
+      onFinish: (payload) => {
+        const userAddress =
+          payload?.authResponsePayload?.profile?.stxAddress?.mainnet || "";
+
+        if (userAddress) {
+          setAddress(userAddress);
+          setIsConnected(true);
+          persistState(true, userAddress);
+        }
+        setIsConnecting(false);
+      },
+      onCancel: () => {
+        setIsConnecting(false);
+      },
+    });
   }, [persistState]);
 
   // Disconnect wallet — clear all state
   const disconnect = useCallback(() => {
-    try {
-      stacksDisconnect();
-    } catch (e) {
-      console.error(e);
-    }
     setIsConnected(false);
     setAddress("");
     persistState(false, "");
