@@ -16,6 +16,7 @@ const {
   broadcastTransaction,
   AnchorMode,
   PostConditionMode,
+  TransactionVersion,
   getAddressFromPrivateKey,
 } = require("@stacks/transactions");
 
@@ -24,7 +25,7 @@ const { STACKS_MAINNET } = require("@stacks/network");
 const network = { ...STACKS_MAINNET, client: { baseUrl: "https://api.mainnet.hiro.so" } };
 
 async function deploy() {
-  const senderAddress = getAddressFromPrivateKey(PRIVATE_KEY, network);
+  const senderAddress = getAddressFromPrivateKey(PRIVATE_KEY, TransactionVersion.Mainnet);
   console.log(`Deployer : ${senderAddress}`);
   console.log(`Contract : ${CONTRACT_NAME}`);
   console.log(`Fee      : ${FEE} uSTX (${FEE / 1e6} STX)`);
@@ -36,7 +37,8 @@ async function deploy() {
     senderKey:         PRIVATE_KEY,
     network:           network,
     anchorMode:        AnchorMode.Any,
-    postConditionMode: PostConditionMode.Allow,
+    // Deny mode: no unexpected asset transfers allowed
+    postConditionMode: PostConditionMode.Deny,
     fee:               FEE,
   });
 

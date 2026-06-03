@@ -8,8 +8,6 @@ import {
   useCallback,
   type ReactNode,
 } from "react";
-import { showConnect } from "@stacks/connect";
-import { APP_NAME, APP_ICON } from "@/lib/constants";
 
 // ─── Types ───────────────────────────────────────────────────────────
 
@@ -31,14 +29,6 @@ const DEFAULT_STATE: WalletState = {
 
 const WalletContext = createContext<WalletState>(DEFAULT_STATE);
 
-// ─── Storage keys ────────────────────────────────────────────────────
-
-const STORAGE_KEYS = {
-  CONNECTED: "blockplot_wallet_connected",
-  ADDRESS: "blockplot_wallet_address",
-  APP_PRIVATE_KEY: "blockplot_app_private_key",
-} as const;
-
 // ─── Provider ────────────────────────────────────────────────────────
 
 export function WalletProvider({ children }: { children: ReactNode }) {
@@ -46,72 +36,69 @@ export function WalletProvider({ children }: { children: ReactNode }) {
   const [isConnecting, setIsConnecting] = useState(false);
   const [address, setAddress] = useState("");
 
-  // Hydrate state from localStorage on mount
+  // Hydrate state from @stacks/connect local storage on mount
   useEffect(() => {
-    try {
-      const connected = localStorage.getItem(STORAGE_KEYS.CONNECTED) === "true";
-      const storedAddress = localStorage.getItem(STORAGE_KEYS.ADDRESS) || "";
-      if (connected && storedAddress) {
-        setIsConnected(true);
-        setAddress(storedAddress);
-      }
-    } catch {
-      // localStorage may not be available (SSR)
-    }
-  }, []);
-
-  // Persist state changes to localStorage
-  const persistState = useCallback((connected: boolean, addr: string) => {
-    try {
-      if (connected && addr) {
-        localStorage.setItem(STORAGE_KEYS.CONNECTED, "true");
-        localStorage.setItem(STORAGE_KEYS.ADDRESS, addr);
-      } else {
-        localStorage.removeItem(STORAGE_KEYS.CONNECTED);
-        localStorage.removeItem(STORAGE_KEYS.ADDRESS);
-        localStorage.removeItem(STORAGE_KEYS.APP_PRIVATE_KEY);
-      }
-    } catch {
-      // localStorage may not be available
-    }
-  }, []);
-
-  // Connect wallet via @stacks/connect
-  const connect = useCallback(() => {
-    setIsConnecting(true);
-
-    showConnect({
-      appDetails: {
-        name: APP_NAME,
-        icon: APP_ICON,
-      },
-      onFinish: (payload) => {
-        const userAddress =
-          payload?.authResponsePayload?.profile?.stxAddress?.mainnet || "";
-
-        if (userAddress) {
-          setAddress(userAddress);
-          setIsConnected(true);
-          persistState(true, userAddress);
+    async function checkConnection() {
+      try {
+        const mod = await import("@stacks/connect");
+        if (mod.isConnected()) {
+          const userData = mod.getLocalStorage();
+          const stxAddr = userData?.addresses?.stx?.[0]?.address ?? "";
+          if (stxAddr) {
+            setIsConnected(true);
+            setAddress(stxAddr);
+          }
         }
-        setIsConnecting(false);
-      },
-      onCancel: () => {
-        setIsConnecting(false);
-      },
-    });
-  }, [persistState]);
+      } catch {
+        // @stacks/connect may fail during SSR or if no wallet was ever connected
+      }
+    }
+    checkConnection();
+  }, []);
 
-  // Disconnect wallet — clear all state
-  const disconnect = useCallback(() => {
+  // Connect wallet via @stacks/connect v8
+  const connectWallet = useCallback(async () => {
+    setIsConnecting(true);
+    try {
+      const { connect: stacksConnect } = await import("@stacks/connect");
+      const response = await stacksConnect();
+
+      // Extract the mainnet STX address from the response
+      const stxAddr = response?.addresses?.stx?.[0]?.address ?? "";
+      if (stxAddr) {
+        setAddress(stxAddr);
+        setIsConnected(true);
+      }
+    } catch (err) {
+      console.error("Wallet connection failed:", err);
+    } finally {
+      setIsConnecting(false);
+    }
+  }, []);
+
+  // Disconnect wallet
+  const disconnectWallet = useCallback(async () => {
+    try {
+      const { disconnect: stacksDisconnect } = await import(
+        "@stacks/connect"
+      );
+      stacksDisconnect();
+    } catch {
+      // ignore — best-effort cleanup
+    }
     setIsConnected(false);
     setAddress("");
-    persistState(false, "");
-  }, [persistState]);
+  }, []);
 
   return (
     <WalletContext.Provider
-      value={{ isConnected, isConnecting, address, connect, disconnect }}
+      value={{
+        isConnected,
+        isConnecting,
+        address,
+        connect: connectWallet,
+        disconnect: disconnectWallet,
+      }}
     >
       {children}
     </WalletContext.Provider>
