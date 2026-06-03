@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useWallet } from "@/context/WalletContext";
 
 const links = [
   { label: "Features", href: "/#features" },
@@ -11,38 +12,8 @@ const links = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-  const [walletConnected, setWalletConnected] = useState(false);
-  const [walletAddress, setWalletAddress] = useState("");
-  const [isConnecting, setIsConnecting] = useState(false);
-
-  useEffect(() => {
-    const checkWallet = () => {
-      const connected = localStorage.getItem("walletConnected") === "true";
-      const addr = localStorage.getItem("walletAddress") || "";
-      setWalletConnected(connected);
-      setWalletAddress(addr);
-    };
-
-    checkWallet();
-    window.addEventListener("wallet-changed", checkWallet);
-    return () => window.removeEventListener("wallet-changed", checkWallet);
-  }, []);
-
-  const handleConnect = () => {
-    setIsConnecting(true);
-    setTimeout(() => {
-      localStorage.setItem("walletConnected", "true");
-      localStorage.setItem("walletAddress", "SP2JDXP3F6A7H2E9X39Z1A78B45CD67EF89AB");
-      window.dispatchEvent(new Event("wallet-changed"));
-      setIsConnecting(false);
-    }, 1000);
-  };
-
-  const handleDisconnect = () => {
-    localStorage.removeItem("walletConnected");
-    localStorage.removeItem("walletAddress");
-    window.dispatchEvent(new Event("wallet-changed"));
-  };
+  const { isConnected, isConnecting, address, connect, disconnect } =
+    useWallet();
 
   return (
     <nav className="fixed top-0 inset-x-0 z-50 bg-brand-dark/80 backdrop-blur border-b border-white/5">
@@ -72,17 +43,17 @@ export default function Navbar() {
           >
             Launch App
           </a>
-          
-          {walletConnected ? (
+
+          {isConnected ? (
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2 bg-green-500/10 border border-green-500/20 px-3 py-1.5 rounded-lg">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
                 <span className="text-xs font-mono text-green-400">
-                  {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}
+                  {address.slice(0, 6)}...{address.slice(-4)}
                 </span>
               </div>
               <button
-                onClick={handleDisconnect}
+                onClick={disconnect}
                 className="text-xs text-gray-400 hover:text-white transition-colors bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-lg border border-white/5"
               >
                 Disconnect
@@ -90,15 +61,30 @@ export default function Navbar() {
             </div>
           ) : (
             <button
-              onClick={handleConnect}
+              onClick={connect}
               disabled={isConnecting}
               className="inline-flex items-center gap-2 bg-brand-orange text-black text-sm font-semibold px-4 py-2 rounded-lg hover:bg-orange-400 transition-colors shadow-[0_0_15px_rgba(247,147,26,0.2)] disabled:opacity-50"
             >
               {isConnecting ? (
                 <>
-                  <svg className="animate-spin h-3.5 w-3.5 text-black" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                  <svg
+                    className="animate-spin h-3.5 w-3.5 text-black"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                    />
                   </svg>
                   Connecting...
                 </>
@@ -144,18 +130,18 @@ export default function Navbar() {
           >
             Launch App
           </a>
-          
-          {walletConnected ? (
+
+          {isConnected ? (
             <div className="flex flex-col gap-2">
               <div className="bg-green-500/10 border border-green-500/20 px-3 py-2 rounded-lg flex items-center justify-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
                 <span className="text-xs font-mono text-green-400">
-                  {walletAddress.slice(0, 8)}...{walletAddress.slice(-6)}
+                  {address.slice(0, 8)}...{address.slice(-6)}
                 </span>
               </div>
               <button
                 onClick={() => {
-                  handleDisconnect();
+                  disconnect();
                   setOpen(false);
                 }}
                 className="bg-white/5 hover:bg-white/10 text-white font-semibold px-4 py-2 rounded-lg text-center border border-white/5"
@@ -166,7 +152,7 @@ export default function Navbar() {
           ) : (
             <button
               onClick={() => {
-                handleConnect();
+                connect();
                 setOpen(false);
               }}
               disabled={isConnecting}
