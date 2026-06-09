@@ -51,11 +51,15 @@ export default function FAQ() {
                   {open === i ? "−" : "+"}
                 </span>
               </button>
-              {open === i && (
+              <div
+                className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                  open === i ? "max-h-40 opacity-100" : "max-h-0 opacity-0"
+                }`}
+              >
                 <div className="px-6 pb-5 text-gray-400 text-sm leading-relaxed border-t border-white/5 pt-4">
                   {f.a}
                 </div>
-              )}
+              </div>
             </div>
           ))}
         </div>
