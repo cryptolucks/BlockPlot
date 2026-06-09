@@ -1,0 +1,17 @@
+{
+  "accountAssociation": {
+    "header": "YOUR_JWT_HEADER_HERE (e.g. from Warpcast Developer Portal)",
+    "payload": "YOUR_JWT_PAYLOAD_HERE",
+    "signature": "YOUR_SIGNATURE_HERE_PROVING_DOMAIN_OWNERSHIP"
+  },
+  "frame": {
+    "version": "1",
+    "name": "BlockPlot",
+    "iconUrl": "https://blockplot.vercel.app/og-image.png",
+    "homeUrl": "https://blockplot.vercel.app/frame",
+    "imageUrl": "https://blockplot.vercel.app/og-image.png",
+    "buttonTitle": "Launch BlockPlot",
+    "splashImageUrl": "https://blockplot.vercel.app/og-image.png",
+    "splashBackgroundColor": "#0D0D0D"
+  }
+}
