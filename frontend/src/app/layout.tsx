@@ -12,6 +12,7 @@ export const metadata: Metadata = {
       "Tamper-proof property ownership on the Stacks blockchain, anchored to Bitcoin.",
     url: "https://blockplot.vercel.app",
     siteName: "BlockPlot",
+    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
     type: "website",
   },
   twitter: {
@@ -19,6 +20,7 @@ export const metadata: Metadata = {
     title: "BlockPlot — Decentralized Land Registry on Stacks",
     description:
       "Tamper-proof property ownership on the Stacks blockchain, anchored to Bitcoin.",
+    images: ["/og-image.png"],
   },
   other: {
     "talentapp:project_verification":
