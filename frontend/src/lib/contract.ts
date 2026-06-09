@@ -57,7 +57,7 @@ export async function registerLand({
 }: RegisterLandParams) {
   try {
     const { request } = await import("@stacks/connect");
-    const response = await request("stx_callContract", {
+    const response = await (request as any)("stx_callContract", {
       contractAddress: CONTRACT_ADDRESS,
       contractName: CONTRACT_NAME,
       functionName: FUNCTIONS.REGISTER_LAND,
@@ -67,7 +67,7 @@ export async function registerLand({
         stringAsciiCV(documentHash),
       ],
       network: NETWORK_TYPE,
-    });
+    } as any);
     onFinish(response.txId);
   } catch {
     onCancel();
@@ -87,13 +87,13 @@ export async function transferLand({
 }: TransferLandParams) {
   try {
     const { request } = await import("@stacks/connect");
-    const response = await request("stx_callContract", {
+    const response = await (request as any)("stx_callContract", {
       contractAddress: CONTRACT_ADDRESS,
       contractName: CONTRACT_NAME,
       functionName: FUNCTIONS.TRANSFER_LAND,
       functionArgs: [uintCV(landId), principalCV(newOwner)],
       network: NETWORK_TYPE,
-    });
+    } as any);
     onFinish(response.txId);
   } catch {
     onCancel();

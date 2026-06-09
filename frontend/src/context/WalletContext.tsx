@@ -43,7 +43,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
         const mod = await import("@stacks/connect");
         if (mod.isConnected()) {
           const userData = mod.getLocalStorage();
-          const stxAddr = userData?.addresses?.stx?.[0]?.address ?? "";
+          const stxAddr = (userData as any)?.addresses?.stx?.[0]?.address ?? "";
           if (stxAddr) {
             setIsConnected(true);
             setAddress(stxAddr);
@@ -64,7 +64,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
       const response = await stacksConnect();
 
       // Extract the mainnet STX address from the response
-      const stxAddr = response?.addresses?.stx?.[0]?.address ?? "";
+      const stxAddr = (response as any)?.addresses?.stx?.[0]?.address ?? "";
       if (stxAddr) {
         setAddress(stxAddr);
         setIsConnected(true);
