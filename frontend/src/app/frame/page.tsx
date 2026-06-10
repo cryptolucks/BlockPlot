@@ -12,7 +12,7 @@ export const metadata: Metadata = {
         action: {
           type: "launch_frame",
           name: "BlockPlot",
-          url: "https://blockplot.vercel.app/frame",
+          url: "https://blockplot.vercel.app",
         },
       },
     }),
