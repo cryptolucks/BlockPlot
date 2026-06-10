@@ -4,7 +4,18 @@ export const metadata: Metadata = {
   title: "BlockPlot Land Registry Frame",
   description: "Verify land ownership directly on Farcaster.",
   other: {
-    "fc:frame": "vNext",
+    "fc:frame": JSON.stringify({
+      version: "next",
+      imageUrl: "https://blockplot.vercel.app/og-image.png",
+      button: {
+        title: "Verify Land",
+        action: {
+          type: "launch_frame",
+          name: "BlockPlot",
+          url: "https://blockplot.vercel.app/frame",
+        },
+      },
+    }),
     "fc:frame:image": "https://blockplot.vercel.app/og-image.png",
     "fc:frame:input:text": "Enter Land ID (e.g. 1)",
     "fc:frame:button:1": "Verify Land 🔍",
