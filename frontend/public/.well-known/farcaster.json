@@ -8,7 +8,7 @@
     "version": "1",
     "name": "BlockPlot",
     "iconUrl": "https://blockplot.vercel.app/og-image.png",
-    "homeUrl": "https://blockplot.vercel.app/frame",
+    "homeUrl": "https://blockplot.vercel.app",
     "imageUrl": "https://blockplot.vercel.app/og-image.png",
     "buttonTitle": "Launch BlockPlot",
     "splashImageUrl": "https://blockplot.vercel.app/og-image.png",

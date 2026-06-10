@@ -26,6 +26,8 @@ export const metadata: Metadata = {
   },
 };
 
+import FarcasterSDKLoader from "@/components/FarcasterSDKLoader";
+
 export default function RootLayout({
   children,
 }: {
@@ -40,7 +42,10 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans antialiased">
-        <WalletProvider>{children}</WalletProvider>
+        <WalletProvider>
+          <FarcasterSDKLoader />
+          {children}
+        </WalletProvider>
       </body>
     </html>
   );
