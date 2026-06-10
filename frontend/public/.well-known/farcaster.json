@@ -1,8 +1,8 @@
 {
   "accountAssociation": {
-    "header": "YOUR_JWT_HEADER_HERE (e.g. from Warpcast Developer Portal)",
-    "payload": "YOUR_JWT_PAYLOAD_HERE",
-    "signature": "YOUR_SIGNATURE_HERE_PROVING_DOMAIN_OWNERSHIP"
+    "header": "eyJmaWQiOjExMDQzMzgsInR5cGUiOiJhdXRoIiwia2V5IjoiMHg4RTg1NTY0OWZBRDBDZThkZWU1NWJCM2IzOUMyNDM0MEEwMTU5NTkxIn0",
+    "payload": "eyJkb21haW4iOiJibG9ja3Bsb3QudmVyY2VsLmFwcCJ9",
+    "signature": "OSTYF975/fXNc5+PWfqUuY+XvAkm6r1kFo+kZQChwCER1ykn6SAMi2uFsVES5SMslLOS0kLNwHibFicYPrQQIhw="
   },
   "frame": {
     "version": "1",
