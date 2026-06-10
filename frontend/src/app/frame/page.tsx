@@ -26,9 +26,12 @@ export const metadata: Metadata = {
   },
 };
 
+import FarcasterSDKLoader from "@/components/FarcasterSDKLoader";
+
 export default function FramePage() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white p-6">
+      <FarcasterSDKLoader />
       <div className="max-w-md w-full bg-brand-gray border border-white/5 rounded-2xl p-8 text-center">
         <h1 className="text-2xl font-extrabold text-brand-orange mb-4">BlockPlot Farcaster Frame</h1>
         <p className="text-gray-400 text-sm mb-6">
