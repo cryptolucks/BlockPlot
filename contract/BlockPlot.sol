@@ -191,9 +191,10 @@ contract BlockPlot {
      */
     function fileDispute(uint256 landId, string calldata reason) external {
         require(landId > 0 && landId <= landCounter, "101"); // ERR-NOT-FOUND
-        require(bytes(reason).length > 0, "104"); // ERR-INVALID-LOCATION
+        require(bytes(reason).length > 0, "110"); // ERR-INVALID-REASON
         require(lands[landId].owner != address(0), "101"); // ERR-NOT-FOUND
-        require(!disputeExists[landId], "107"); // ERR-DISPUTE-EXISTS
+        require(lands[landId].owner != msg.sender, "102"); // ERR-UNAUTHORIZED
+        require(!disputeExists[landId] || disputes[landId].resolved, "107"); // ERR-DISPUTE-EXISTS
 
         disputes[landId] = Dispute({
             claimant: msg.sender,
