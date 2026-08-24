@@ -49,19 +49,20 @@ export default function RegisterPage() {
     setIsUploading(true);
     setUploadProgress(0);
     
+    const randomHash = "Qm" + Array.from({ length: 44 }, () =>
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+      [Math.floor(Math.random() * 62)]
+    ).join("");
     const interval = setInterval(() => {
       setUploadProgress(prev => {
-        if (prev >= 100) {
+        const next = Math.min(prev + 10, 100);
+        if (next >= 100) {
           clearInterval(interval);
           setIsUploading(false);
-          const randomHash = "Qm" + Array.from({ length: 44 }, () => 
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-            [Math.floor(Math.random() * 62)]
-          ).join("");
           setDocHash(randomHash);
           return 100;
         }
-        return prev + 10;
+        return next;
       });
     }, 100);
   };
